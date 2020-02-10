@@ -17,7 +17,8 @@ export class RxState<T> extends State<T> {
 }
 
 @Injectable({providedIn: 'root'})
-export class RxGlobalState<T> extends RxState<T> {
+export class RxGlobalState<T> extends State<T> {
+  subscription = new Subscription();
 
   constructor() {
     super();

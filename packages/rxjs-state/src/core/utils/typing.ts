@@ -32,9 +32,9 @@ export function isObservableGuard<T>(
   return isObservable(potentialObservableValue);
 }
 
-export function isOperateFnArrayGuard<T>(
+export function isOperateFnArrayGuard<T, R = T>(
   op: any[]
-): op is OperatorFunction<T, any>[] {
+): op is OperatorFunction<T, R>[] {
   return op.length > 0 && op.every((i: any) => typeof i !== 'string');
 }
 

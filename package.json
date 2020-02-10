@@ -3,8 +3,7 @@
   "version": "0.0.0-alpha.0",
   "description": "Ephemeral state-management helper written in rxjs",
   "main": "rxjs/src/index.ts",
-  "scripts": {
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/BioPhoton/rxjs-ephemeral-state.git"
@@ -27,6 +26,7 @@
     "rxjs": "^6.5.3"
   },
   "devDependencies": {
+    "rimraf": "^3.0.1",
     "ts-node": "^8.5.4",
     "typescript": "^3.7.3"
   }

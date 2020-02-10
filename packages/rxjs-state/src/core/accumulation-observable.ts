@@ -1,19 +1,18 @@
 import {ConnectableObservable, merge, Observable, queueScheduler, Subject, Subscribable, Subscription} from "rxjs";
-import {distinctUntilChanged, mergeAll, observeOn, publishReplay, scan, tap} from "rxjs/operators";
+import {distinctUntilChanged, mergeAll, observeOn, publishReplay, scan} from "rxjs/operators";
 
 export function createAccumulationObservable<T>(
     stateObservables = new Subject<Observable<Partial<T>>>(),
     stateSlices = new Subject<Partial<T>>(),
     stateAccumulator: (st: T, sl: Partial<T>) => T = (st: T, sl: Partial<T>): T => {
-        return {...st, ...sl} as T;
+        return {...st, ...sl};
     }
 ): {
-    state: T,
     state$: Observable<T>,
     nextSlice: (stateSlice: Partial<T>) => void,
     nextSliceObservable: (state$: Observable<Partial<T>>) => void,
 } & Subscribable<T> {
-    let state = {} as T;
+
     const state$: Observable<T> = merge(
         stateObservables.pipe(
             distinctUntilChanged(),
@@ -22,8 +21,7 @@ export function createAccumulationObservable<T>(
         ),
         stateSlices.pipe(observeOn(queueScheduler))
     ).pipe(
-        scan(stateAccumulator, state),
-        tap(s => state = s),
+        scan(stateAccumulator, {} as T),
         publishReplay(1)
     );
 
@@ -40,7 +38,6 @@ export function createAccumulationObservable<T>(
     }
 
     return {
-        state,
         state$,
         nextSlice,
         nextSliceObservable,

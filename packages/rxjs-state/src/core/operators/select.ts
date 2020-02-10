@@ -102,3 +102,11 @@ export function select<T>(...opOrMapFn: OperatorFunction<T, any>[] | string[]): 
     throw new WrongSelectParamsError();
   };
 }
+
+const s = of({pagId: 42, foo: {bar: {baz: 'test'}}}).pipe(
+    select(
+        map(s => s.foo.bar),
+    )
+);
+
+console.log('asfd');

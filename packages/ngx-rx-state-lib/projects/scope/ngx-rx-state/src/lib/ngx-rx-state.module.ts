@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
-import { NgxRxStateComponent } from './ngx-rx-state.component';
+
 
 
 
 @NgModule({
-  declarations: [NgxRxStateComponent],
+  declarations: [],
   imports: [
   ],
-  exports: [NgxRxStateComponent]
+  exports: []
 })
 export class NgxRxStateModule { }
