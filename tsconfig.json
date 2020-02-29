@@ -1,14 +1,24 @@
 {
-  "extends": "./tsconfig.build.json",
+  "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./packages",
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2017","dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
     "paths": {
-      "@rx-state/rxjs-sate": [
-        "rxjs-sate/src"
-      ],
-      "@rx-state/ngx-rx-sate": [
-        "ngx-rx-sate/src"
-      ]
+      "@rx-state/rxjs-state": ["libs/rxjs-state/src/index.ts"],
+      "@rx-state/ngx-state": ["libs/ngx-state/src/index.ts"]
     }
-  }
+  },
+  "exclude": ["node_modules", "tmp"]
 }

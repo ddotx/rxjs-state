@@ -1,0 +1,28 @@
+{
+  "npmScope": "rx-state",
+  "implicitDependencies": {
+    "workspace.json": "*",
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    "tsconfig.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
+  },
+  "projects": {
+    "rxjs-state": {
+      "tags": []
+    },
+    "ngx-state": {
+      "tags": []
+    },
+    "angular-demo": {
+      "tags": []
+    },
+    "angular-demo-e2e": {
+      "tags": [],
+      "implicitDependencies": ["angular-demo"]
+    }
+  }
+}
