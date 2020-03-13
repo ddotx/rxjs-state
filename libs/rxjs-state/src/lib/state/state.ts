@@ -151,7 +151,6 @@ export class State<T> implements Subscribable<any> {
         throw new WrongSelectParamsError();
     }
 
-    hold<S>(observableWithSideEffect: Observable<S>): void;
     hold<S>(
         obsOrObsWithSideEffect: Observable<S>,
         sideEffectFn?: (arg: S) => void
