@@ -5,8 +5,6 @@ export {
   CoalesceConfig,
   CoalescingContext,
   getCoalesceWorkConfig,
-  isScheduling,
-  coalesceWork,
 } from './coalesce-work';
 export {
   potentialObservableValue,

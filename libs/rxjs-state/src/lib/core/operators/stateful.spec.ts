@@ -13,7 +13,7 @@ interface ArrayState {
 }
 
 // tslint:disable: no-duplicate-string
-fdescribe('stateful', () => {
+describe('stateful', () => {
   it('should mirror EMPTY', marbles(m => {
       const source = EMPTY;
       m.expect(source.pipe(stateful())).toBeObservable('|');

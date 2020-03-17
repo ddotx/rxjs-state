@@ -40,52 +40,52 @@
             {
               "file": "apps/angular-demo-e2e/cypress.json",
               "ext": ".json",
-              "mtime": 1581468267782.5957
+              "mtime": 1584065040717.4375
             },
             {
               "file": "apps/angular-demo-e2e/src/fixtures/example.json",
               "ext": ".json",
-              "mtime": 1581468267785.588
+              "mtime": 1584065040720.4294
             },
             {
               "file": "apps/angular-demo-e2e/src/integration/app.spec.ts",
               "ext": ".ts",
-              "mtime": 1581468267786.5852
+              "mtime": 1584065040721.4265
             },
             {
               "file": "apps/angular-demo-e2e/src/plugins/index.js",
               "ext": ".js",
-              "mtime": 1581468267787.5823
+              "mtime": 1584065040722.4238
             },
             {
               "file": "apps/angular-demo-e2e/src/support/app.po.ts",
               "ext": ".ts",
-              "mtime": 1581468267788.5818
+              "mtime": 1584065040724.4187
             },
             {
               "file": "apps/angular-demo-e2e/src/support/commands.ts",
               "ext": ".ts",
-              "mtime": 1581468267788.5818
+              "mtime": 1584065040726.4126
             },
             {
               "file": "apps/angular-demo-e2e/src/support/index.ts",
               "ext": ".ts",
-              "mtime": 1581468267790.573
+              "mtime": 1584065040728.407
             },
             {
               "file": "apps/angular-demo-e2e/tsconfig.e2e.json",
               "ext": ".json",
-              "mtime": 1581468267783.5933
+              "mtime": 1584065040729.4043
             },
             {
               "file": "apps/angular-demo-e2e/tsconfig.json",
               "ext": ".json",
-              "mtime": 1581468267783.5933
+              "mtime": 1584065040730.4033
             },
             {
               "file": "apps/angular-demo-e2e/tslint.json",
               "ext": ".json",
-              "mtime": 1581468267781.5986
+              "mtime": 1584065040731.3992
             }
           ]
         }
@@ -197,102 +197,87 @@
             {
               "file": "apps/angular-demo/browserslist",
               "ext": "",
-              "mtime": 1581468267769.5388
+              "mtime": 1584065040732.3965
             },
             {
               "file": "apps/angular-demo/jest.config.js",
               "ext": ".js",
-              "mtime": 1581468267779.6033
-            },
-            {
-              "file": "apps/angular-demo/src/app/app.component.html",
-              "ext": ".html",
-              "mtime": 1581468267777.5186
-            },
-            {
-              "file": "apps/angular-demo/src/app/app.component.scss",
-              "ext": ".scss",
-              "mtime": 1581468267778.6025
-            },
-            {
-              "file": "apps/angular-demo/src/app/app.component.spec.ts",
-              "ext": ".ts",
-              "mtime": 1581468267777.5186
+              "mtime": 1584065040734.3914
             },
             {
               "file": "apps/angular-demo/src/app/app.component.ts",
               "ext": ".ts",
-              "mtime": 1581468267778.6025
+              "mtime": 1584465658477.8457
             },
             {
               "file": "apps/angular-demo/src/app/app.module.ts",
               "ext": ".ts",
-              "mtime": 1581468267776.527
+              "mtime": 1584065040740.3762
             },
             {
               "file": "apps/angular-demo/src/assets/.gitkeep",
               "ext": "",
-              "mtime": 1581468267774.5251
+              "mtime": 1584065040741.373
             },
             {
               "file": "apps/angular-demo/src/environments/environment.prod.ts",
               "ext": ".ts",
-              "mtime": 1581468267775.5232
+              "mtime": 1584065040742.3708
             },
             {
               "file": "apps/angular-demo/src/environments/environment.ts",
               "ext": ".ts",
-              "mtime": 1581468267775.5232
+              "mtime": 1584065040743.367
             },
             {
               "file": "apps/angular-demo/src/favicon.ico",
               "ext": ".ico",
-              "mtime": 1581468267768.5388
+              "mtime": 1584065040745.3655
             },
             {
               "file": "apps/angular-demo/src/index.html",
               "ext": ".html",
-              "mtime": 1581468267771.5344
+              "mtime": 1584065040746.3787
             },
             {
               "file": "apps/angular-demo/src/main.ts",
               "ext": ".ts",
-              "mtime": 1581468267771.5344
+              "mtime": 1584065040747.356
             },
             {
               "file": "apps/angular-demo/src/polyfills.ts",
               "ext": ".ts",
-              "mtime": 1581468267772.531
+              "mtime": 1584065040749.351
             },
             {
               "file": "apps/angular-demo/src/styles.scss",
               "ext": ".scss",
-              "mtime": 1581468267773.5286
+              "mtime": 1584065040749.351
             },
             {
               "file": "apps/angular-demo/src/test-setup.ts",
               "ext": ".ts",
-              "mtime": 1581468267780.6003
+              "mtime": 1584065040750.3474
             },
             {
               "file": "apps/angular-demo/tsconfig.app.json",
               "ext": ".json",
-              "mtime": 1581468267769.5388
+              "mtime": 1584065040751.345
             },
             {
               "file": "apps/angular-demo/tsconfig.json",
               "ext": ".json",
-              "mtime": 1581468267767.0376
+              "mtime": 1584065040752.3425
             },
             {
               "file": "apps/angular-demo/tsconfig.spec.json",
               "ext": ".json",
-              "mtime": 1581468267779.6033
+              "mtime": 1584065040753.339
             },
             {
               "file": "apps/angular-demo/tslint.json",
               "ext": ".json",
-              "mtime": 1581468267770.541
+              "mtime": 1584065040754.337
             }
           ]
         }
@@ -332,147 +317,177 @@
             {
               "file": "libs/rxjs-state/jest.config.js",
               "ext": ".js",
-              "mtime": 1581457681175.8542
+              "mtime": 1584065041038.7002
             },
             {
               "file": "libs/rxjs-state/README.md",
               "ext": ".md",
-              "mtime": 1581457681168.8726
+              "mtime": 1584065041037.7036
             },
             {
               "file": "libs/rxjs-state/src/index.ts",
               "ext": ".ts",
-              "mtime": 1581458038952.7007
+              "mtime": 1584065041039.6982
+            },
+            {
+              "file": "libs/rxjs-state/src/lib/core/accumulation-observable.spec.ts",
+              "ext": ".ts",
+              "mtime": 1584065041042.2056
             },
             {
               "file": "libs/rxjs-state/src/lib/core/accumulation-observable.ts",
               "ext": ".ts",
-              "mtime": 1581369738918
+              "mtime": 1584065041043.2031
             },
             {
               "file": "libs/rxjs-state/src/lib/core/index.ts",
               "ext": ".ts",
-              "mtime": 1581461843964.8208
+              "mtime": 1584065041049.1877
             },
             {
               "file": "libs/rxjs-state/src/lib/core/operators/coalesce.md",
               "ext": ".md",
-              "mtime": 1581464455856.045
+              "mtime": 1584065041051.1826
             },
             {
               "file": "libs/rxjs-state/src/lib/core/operators/coalesce.spec.ts",
               "ext": ".ts",
-              "mtime": 1581464455866.0193
+              "mtime": 1584065041052.1797
             },
             {
               "file": "libs/rxjs-state/src/lib/core/operators/coalesce.ts",
               "ext": ".ts",
-              "mtime": 1581026746719
+              "mtime": 1584465778263.674
             },
             {
               "file": "libs/rxjs-state/src/lib/core/operators/index.ts",
               "ext": ".ts",
-              "mtime": 1581457872115.49
+              "mtime": 1584065041054.1748
             },
             {
               "file": "libs/rxjs-state/src/lib/core/operators/select.md",
               "ext": ".md",
-              "mtime": 1581464427278.08
+              "mtime": 1584065041055.171
             },
             {
               "file": "libs/rxjs-state/src/lib/core/operators/select.spec.ts",
               "ext": ".ts",
-              "mtime": 1581464455854.05
+              "mtime": 1584065041056.1682
             },
             {
               "file": "libs/rxjs-state/src/lib/core/operators/select.ts",
               "ext": ".ts",
-              "mtime": 1581463422141.3943
+              "mtime": 1584065041056.1682
             },
             {
               "file": "libs/rxjs-state/src/lib/core/operators/stateful.md",
               "ext": ".md",
-              "mtime": 1581464455859.0369
+              "mtime": 1584065041057.165
             },
             {
               "file": "libs/rxjs-state/src/lib/core/operators/stateful.spec.ts",
               "ext": ".ts",
-              "mtime": 1581461038273.1743
+              "mtime": 1584189741793.038
             },
             {
               "file": "libs/rxjs-state/src/lib/core/operators/stateful.ts",
               "ext": ".ts",
-              "mtime": 1581026746722
+              "mtime": 1584466072975.645
+            },
+            {
+              "file": "libs/rxjs-state/src/lib/core/side-effect-observable.spec.ts",
+              "ext": ".ts",
+              "mtime": 1584065041060.6882
             },
             {
               "file": "libs/rxjs-state/src/lib/core/side-effect-observable.ts",
               "ext": ".ts",
-              "mtime": 1581026746724
+              "mtime": 1584065041061.6667
             },
             {
               "file": "libs/rxjs-state/src/lib/core/utils/argument-not-observable-error.ts",
               "ext": ".ts",
-              "mtime": 1581026746725
+              "mtime": 1584065041062.663
+            },
+            {
+              "file": "libs/rxjs-state/src/lib/core/utils/coalesce-work.spec.ts",
+              "ext": ".ts",
+              "mtime": 1584065041063.6606
             },
             {
               "file": "libs/rxjs-state/src/lib/core/utils/coalesce-work.ts",
               "ext": ".ts",
-              "mtime": 1581026746726
+              "mtime": 1584465399758.587
+            },
+            {
+              "file": "libs/rxjs-state/src/lib/core/utils/get-global-this.spec.ts",
+              "ext": ".ts",
+              "mtime": 1584065041065.6555
+            },
+            {
+              "file": "libs/rxjs-state/src/lib/core/utils/get-global-this.ts",
+              "ext": ".ts",
+              "mtime": 1584054548659
             },
             {
               "file": "libs/rxjs-state/src/lib/core/utils/index.ts",
               "ext": ".ts",
-              "mtime": 1581026746729
+              "mtime": 1584065041067.6504
             },
             {
               "file": "libs/rxjs-state/src/lib/core/utils/pipe-from-array.ts",
               "ext": ".ts",
-              "mtime": 1581026746731
+              "mtime": 1584065041067.6504
             },
             {
               "file": "libs/rxjs-state/src/lib/core/utils/typing.ts",
               "ext": ".ts",
-              "mtime": 1581372656942
+              "mtime": 1584065041068.6475
             },
             {
               "file": "libs/rxjs-state/src/lib/core/utils/wrong-select-params-error.ts",
               "ext": ".ts",
-              "mtime": 1581026746733
+              "mtime": 1584065041069.644
             },
             {
               "file": "libs/rxjs-state/src/lib/index.ts",
               "ext": ".ts",
-              "mtime": 1581026746733
+              "mtime": 1584465581434.7915
             },
             {
               "file": "libs/rxjs-state/src/lib/state/index.ts",
               "ext": ".ts",
-              "mtime": 1581026746735
+              "mtime": 1584065041071.639
+            },
+            {
+              "file": "libs/rxjs-state/src/lib/state/state.spec.ts",
+              "ext": ".ts",
+              "mtime": 1584065041072.6365
             },
             {
               "file": "libs/rxjs-state/src/lib/state/state.ts",
               "ext": ".ts",
-              "mtime": 1581451968290
+              "mtime": 1584459895526.1558
             },
             {
               "file": "libs/rxjs-state/tsconfig.json",
               "ext": ".json",
-              "mtime": 1581457681169.87
+              "mtime": 1584065041074.6316
             },
             {
               "file": "libs/rxjs-state/tsconfig.lib.json",
               "ext": ".json",
-              "mtime": 1581457681170.868
+              "mtime": 1584065041075.6296
             },
             {
               "file": "libs/rxjs-state/tsconfig.spec.json",
               "ext": ".json",
-              "mtime": 1581457681174.856
+              "mtime": 1584065041075.6296
             },
             {
               "file": "libs/rxjs-state/tslint.json",
               "ext": ".json",
-              "mtime": 1581457681168.8726
+              "mtime": 1584065041076.626
             }
           ]
         }
@@ -518,62 +533,67 @@
             {
               "file": "libs/ngx-state/jest.config.js",
               "ext": ".js",
-              "mtime": 1581458929018.1182
+              "mtime": 1584065041008.2708
             },
             {
               "file": "libs/ngx-state/README.md",
               "ext": ".md",
-              "mtime": 1581458929011.1584
+              "mtime": 1584065041007.274
             },
             {
               "file": "libs/ngx-state/src/index.ts",
               "ext": ".ts",
-              "mtime": 1581465161574.1604
+              "mtime": 1584065041009.2678
             },
             {
               "file": "libs/ngx-state/src/lib/ngx-state.module.ts",
               "ext": ".ts",
-              "mtime": 1581461953170.8706
+              "mtime": 1584065041013.7676
+            },
+            {
+              "file": "libs/ngx-state/src/lib/rx-global-state.service.ts",
+              "ext": ".ts",
+              "mtime": 1584065041026.7412
             },
             {
               "file": "libs/ngx-state/src/lib/rx-state.service.spec.ts",
               "ext": ".ts",
-              "mtime": 1581027040876
+              "mtime": 1584065041030.7222
             },
             {
               "file": "libs/ngx-state/src/lib/rx-state.service.ts",
               "ext": ".ts",
-              "mtime": 1581462003256.216
+              "mtime": 1584065041030.7222
             },
             {
               "file": "libs/ngx-state/src/test-setup.ts",
               "ext": ".ts",
-              "mtime": 1581458929019.1155
+              "mtime": 1584065041031.719
             },
             {
               "file": "libs/ngx-state/tsconfig.json",
               "ext": ".json",
-              "mtime": 1581458929017.1213
+              "mtime": 1584065041032.7163
             },
             {
               "file": "libs/ngx-state/tsconfig.lib.json",
               "ext": ".json",
-              "mtime": 1581458929012.1355
+              "mtime": 1584065041033.7148
             },
             {
               "file": "libs/ngx-state/tsconfig.lib.prod.json",
               "ext": ".json",
-              "mtime": 1581458929013.135
+              "mtime": 1584065041034.7117
             },
             {
               "file": "libs/ngx-state/tsconfig.spec.json",
               "ext": ".json",
-              "mtime": 1581458929017.1213
+              "mtime": 1584065041035.7083
             },
             {
               "file": "libs/ngx-state/tslint.json",
               "ext": ".json",
-              "mtime": 1581458929013.135
+              "mtime": 1584065041036.7058
             }
           ]
         }
@@ -654,7 +674,7 @@
         "type": "npm",
         "name": "rxjs",
         "data": {
-          "version": "~6.5.0",
+          "version": "^6.5.4",
           "files": []
         }
       },
@@ -877,17 +897,27 @@
         {
           "type": "static",
           "source": "angular-demo",
+          "target": "rxjs-state"
+        },
+        {
+          "type": "static",
+          "source": "angular-demo",
           "target": "@angular/core"
         },
         {
           "type": "static",
           "source": "angular-demo",
-          "target": "@angular/router"
+          "target": "rxjs"
         },
         {
           "type": "static",
           "source": "angular-demo",
           "target": "@angular/platform-browser"
+        },
+        {
+          "type": "static",
+          "source": "angular-demo",
+          "target": "@angular/router"
         },
         {
           "type": "static",
@@ -909,12 +939,12 @@
         {
           "type": "static",
           "source": "rxjs-state",
-          "target": "rxjs"
+          "target": "rxjs-marbles"
         },
         {
           "type": "static",
           "source": "rxjs-state",
-          "target": "rxjs-marbles"
+          "target": "rxjs"
         }
       ]
     }
@@ -924,363 +954,383 @@
       {
         "file": "apps/angular-demo-e2e/cypress.json",
         "ext": ".json",
-        "mtime": 1581468267782.5957
+        "mtime": 1584065040717.4375
       },
       {
         "file": "apps/angular-demo-e2e/src/fixtures/example.json",
         "ext": ".json",
-        "mtime": 1581468267785.588
+        "mtime": 1584065040720.4294
       },
       {
         "file": "apps/angular-demo-e2e/src/integration/app.spec.ts",
         "ext": ".ts",
-        "mtime": 1581468267786.5852
+        "mtime": 1584065040721.4265
       },
       {
         "file": "apps/angular-demo-e2e/src/plugins/index.js",
         "ext": ".js",
-        "mtime": 1581468267787.5823
+        "mtime": 1584065040722.4238
       },
       {
         "file": "apps/angular-demo-e2e/src/support/app.po.ts",
         "ext": ".ts",
-        "mtime": 1581468267788.5818
+        "mtime": 1584065040724.4187
       },
       {
         "file": "apps/angular-demo-e2e/src/support/commands.ts",
         "ext": ".ts",
-        "mtime": 1581468267788.5818
+        "mtime": 1584065040726.4126
       },
       {
         "file": "apps/angular-demo-e2e/src/support/index.ts",
         "ext": ".ts",
-        "mtime": 1581468267790.573
+        "mtime": 1584065040728.407
       },
       {
         "file": "apps/angular-demo-e2e/tsconfig.e2e.json",
         "ext": ".json",
-        "mtime": 1581468267783.5933
+        "mtime": 1584065040729.4043
       },
       {
         "file": "apps/angular-demo-e2e/tsconfig.json",
         "ext": ".json",
-        "mtime": 1581468267783.5933
+        "mtime": 1584065040730.4033
       },
       {
         "file": "apps/angular-demo-e2e/tslint.json",
         "ext": ".json",
-        "mtime": 1581468267781.5986
+        "mtime": 1584065040731.3992
       }
     ],
     "angular-demo": [
       {
         "file": "apps/angular-demo/browserslist",
         "ext": "",
-        "mtime": 1581468267769.5388
+        "mtime": 1584065040732.3965
       },
       {
         "file": "apps/angular-demo/jest.config.js",
         "ext": ".js",
-        "mtime": 1581468267779.6033
-      },
-      {
-        "file": "apps/angular-demo/src/app/app.component.html",
-        "ext": ".html",
-        "mtime": 1581468267777.5186
-      },
-      {
-        "file": "apps/angular-demo/src/app/app.component.scss",
-        "ext": ".scss",
-        "mtime": 1581468267778.6025
-      },
-      {
-        "file": "apps/angular-demo/src/app/app.component.spec.ts",
-        "ext": ".ts",
-        "mtime": 1581468267777.5186
+        "mtime": 1584065040734.3914
       },
       {
         "file": "apps/angular-demo/src/app/app.component.ts",
         "ext": ".ts",
-        "mtime": 1581468267778.6025
+        "mtime": 1584465658477.8457
       },
       {
         "file": "apps/angular-demo/src/app/app.module.ts",
         "ext": ".ts",
-        "mtime": 1581468267776.527
+        "mtime": 1584065040740.3762
       },
       {
         "file": "apps/angular-demo/src/assets/.gitkeep",
         "ext": "",
-        "mtime": 1581468267774.5251
+        "mtime": 1584065040741.373
       },
       {
         "file": "apps/angular-demo/src/environments/environment.prod.ts",
         "ext": ".ts",
-        "mtime": 1581468267775.5232
+        "mtime": 1584065040742.3708
       },
       {
         "file": "apps/angular-demo/src/environments/environment.ts",
         "ext": ".ts",
-        "mtime": 1581468267775.5232
+        "mtime": 1584065040743.367
       },
       {
         "file": "apps/angular-demo/src/favicon.ico",
         "ext": ".ico",
-        "mtime": 1581468267768.5388
+        "mtime": 1584065040745.3655
       },
       {
         "file": "apps/angular-demo/src/index.html",
         "ext": ".html",
-        "mtime": 1581468267771.5344
+        "mtime": 1584065040746.3787
       },
       {
         "file": "apps/angular-demo/src/main.ts",
         "ext": ".ts",
-        "mtime": 1581468267771.5344
+        "mtime": 1584065040747.356
       },
       {
         "file": "apps/angular-demo/src/polyfills.ts",
         "ext": ".ts",
-        "mtime": 1581468267772.531
+        "mtime": 1584065040749.351
       },
       {
         "file": "apps/angular-demo/src/styles.scss",
         "ext": ".scss",
-        "mtime": 1581468267773.5286
+        "mtime": 1584065040749.351
       },
       {
         "file": "apps/angular-demo/src/test-setup.ts",
         "ext": ".ts",
-        "mtime": 1581468267780.6003
+        "mtime": 1584065040750.3474
       },
       {
         "file": "apps/angular-demo/tsconfig.app.json",
         "ext": ".json",
-        "mtime": 1581468267769.5388
+        "mtime": 1584065040751.345
       },
       {
         "file": "apps/angular-demo/tsconfig.json",
         "ext": ".json",
-        "mtime": 1581468267767.0376
+        "mtime": 1584065040752.3425
       },
       {
         "file": "apps/angular-demo/tsconfig.spec.json",
         "ext": ".json",
-        "mtime": 1581468267779.6033
+        "mtime": 1584065040753.339
       },
       {
         "file": "apps/angular-demo/tslint.json",
         "ext": ".json",
-        "mtime": 1581468267770.541
+        "mtime": 1584065040754.337
       }
     ],
     "rxjs-state": [
       {
         "file": "libs/rxjs-state/jest.config.js",
         "ext": ".js",
-        "mtime": 1581457681175.8542
+        "mtime": 1584065041038.7002
       },
       {
         "file": "libs/rxjs-state/README.md",
         "ext": ".md",
-        "mtime": 1581457681168.8726
+        "mtime": 1584065041037.7036
       },
       {
         "file": "libs/rxjs-state/src/index.ts",
         "ext": ".ts",
-        "mtime": 1581458038952.7007
+        "mtime": 1584065041039.6982
+      },
+      {
+        "file": "libs/rxjs-state/src/lib/core/accumulation-observable.spec.ts",
+        "ext": ".ts",
+        "mtime": 1584065041042.2056
       },
       {
         "file": "libs/rxjs-state/src/lib/core/accumulation-observable.ts",
         "ext": ".ts",
-        "mtime": 1581369738918
+        "mtime": 1584065041043.2031
       },
       {
         "file": "libs/rxjs-state/src/lib/core/index.ts",
         "ext": ".ts",
-        "mtime": 1581461843964.8208
+        "mtime": 1584065041049.1877
       },
       {
         "file": "libs/rxjs-state/src/lib/core/operators/coalesce.md",
         "ext": ".md",
-        "mtime": 1581464455856.045
+        "mtime": 1584065041051.1826
       },
       {
         "file": "libs/rxjs-state/src/lib/core/operators/coalesce.spec.ts",
         "ext": ".ts",
-        "mtime": 1581464455866.0193
+        "mtime": 1584065041052.1797
       },
       {
         "file": "libs/rxjs-state/src/lib/core/operators/coalesce.ts",
         "ext": ".ts",
-        "mtime": 1581026746719
+        "mtime": 1584465778263.674
       },
       {
         "file": "libs/rxjs-state/src/lib/core/operators/index.ts",
         "ext": ".ts",
-        "mtime": 1581457872115.49
+        "mtime": 1584065041054.1748
       },
       {
         "file": "libs/rxjs-state/src/lib/core/operators/select.md",
         "ext": ".md",
-        "mtime": 1581464427278.08
+        "mtime": 1584065041055.171
       },
       {
         "file": "libs/rxjs-state/src/lib/core/operators/select.spec.ts",
         "ext": ".ts",
-        "mtime": 1581464455854.05
+        "mtime": 1584065041056.1682
       },
       {
         "file": "libs/rxjs-state/src/lib/core/operators/select.ts",
         "ext": ".ts",
-        "mtime": 1581463422141.3943
+        "mtime": 1584065041056.1682
       },
       {
         "file": "libs/rxjs-state/src/lib/core/operators/stateful.md",
         "ext": ".md",
-        "mtime": 1581464455859.0369
+        "mtime": 1584065041057.165
       },
       {
         "file": "libs/rxjs-state/src/lib/core/operators/stateful.spec.ts",
         "ext": ".ts",
-        "mtime": 1581461038273.1743
+        "mtime": 1584189741793.038
       },
       {
         "file": "libs/rxjs-state/src/lib/core/operators/stateful.ts",
         "ext": ".ts",
-        "mtime": 1581026746722
+        "mtime": 1584466072975.645
+      },
+      {
+        "file": "libs/rxjs-state/src/lib/core/side-effect-observable.spec.ts",
+        "ext": ".ts",
+        "mtime": 1584065041060.6882
       },
       {
         "file": "libs/rxjs-state/src/lib/core/side-effect-observable.ts",
         "ext": ".ts",
-        "mtime": 1581026746724
+        "mtime": 1584065041061.6667
       },
       {
         "file": "libs/rxjs-state/src/lib/core/utils/argument-not-observable-error.ts",
         "ext": ".ts",
-        "mtime": 1581026746725
+        "mtime": 1584065041062.663
+      },
+      {
+        "file": "libs/rxjs-state/src/lib/core/utils/coalesce-work.spec.ts",
+        "ext": ".ts",
+        "mtime": 1584065041063.6606
       },
       {
         "file": "libs/rxjs-state/src/lib/core/utils/coalesce-work.ts",
         "ext": ".ts",
-        "mtime": 1581026746726
+        "mtime": 1584465399758.587
+      },
+      {
+        "file": "libs/rxjs-state/src/lib/core/utils/get-global-this.spec.ts",
+        "ext": ".ts",
+        "mtime": 1584065041065.6555
+      },
+      {
+        "file": "libs/rxjs-state/src/lib/core/utils/get-global-this.ts",
+        "ext": ".ts",
+        "mtime": 1584054548659
       },
       {
         "file": "libs/rxjs-state/src/lib/core/utils/index.ts",
         "ext": ".ts",
-        "mtime": 1581026746729
+        "mtime": 1584065041067.6504
       },
       {
         "file": "libs/rxjs-state/src/lib/core/utils/pipe-from-array.ts",
         "ext": ".ts",
-        "mtime": 1581026746731
+        "mtime": 1584065041067.6504
       },
       {
         "file": "libs/rxjs-state/src/lib/core/utils/typing.ts",
         "ext": ".ts",
-        "mtime": 1581372656942
+        "mtime": 1584065041068.6475
       },
       {
         "file": "libs/rxjs-state/src/lib/core/utils/wrong-select-params-error.ts",
         "ext": ".ts",
-        "mtime": 1581026746733
+        "mtime": 1584065041069.644
       },
       {
         "file": "libs/rxjs-state/src/lib/index.ts",
         "ext": ".ts",
-        "mtime": 1581026746733
+        "mtime": 1584465581434.7915
       },
       {
         "file": "libs/rxjs-state/src/lib/state/index.ts",
         "ext": ".ts",
-        "mtime": 1581026746735
+        "mtime": 1584065041071.639
+      },
+      {
+        "file": "libs/rxjs-state/src/lib/state/state.spec.ts",
+        "ext": ".ts",
+        "mtime": 1584065041072.6365
       },
       {
         "file": "libs/rxjs-state/src/lib/state/state.ts",
         "ext": ".ts",
-        "mtime": 1581451968290
+        "mtime": 1584459895526.1558
       },
       {
         "file": "libs/rxjs-state/tsconfig.json",
         "ext": ".json",
-        "mtime": 1581457681169.87
+        "mtime": 1584065041074.6316
       },
       {
         "file": "libs/rxjs-state/tsconfig.lib.json",
         "ext": ".json",
-        "mtime": 1581457681170.868
+        "mtime": 1584065041075.6296
       },
       {
         "file": "libs/rxjs-state/tsconfig.spec.json",
         "ext": ".json",
-        "mtime": 1581457681174.856
+        "mtime": 1584065041075.6296
       },
       {
         "file": "libs/rxjs-state/tslint.json",
         "ext": ".json",
-        "mtime": 1581457681168.8726
+        "mtime": 1584065041076.626
       }
     ],
     "ngx-state": [
       {
         "file": "libs/ngx-state/jest.config.js",
         "ext": ".js",
-        "mtime": 1581458929018.1182
+        "mtime": 1584065041008.2708
       },
       {
         "file": "libs/ngx-state/README.md",
         "ext": ".md",
-        "mtime": 1581458929011.1584
+        "mtime": 1584065041007.274
       },
       {
         "file": "libs/ngx-state/src/index.ts",
         "ext": ".ts",
-        "mtime": 1581465161574.1604
+        "mtime": 1584065041009.2678
       },
       {
         "file": "libs/ngx-state/src/lib/ngx-state.module.ts",
         "ext": ".ts",
-        "mtime": 1581461953170.8706
+        "mtime": 1584065041013.7676
+      },
+      {
+        "file": "libs/ngx-state/src/lib/rx-global-state.service.ts",
+        "ext": ".ts",
+        "mtime": 1584065041026.7412
       },
       {
         "file": "libs/ngx-state/src/lib/rx-state.service.spec.ts",
         "ext": ".ts",
-        "mtime": 1581027040876
+        "mtime": 1584065041030.7222
       },
       {
         "file": "libs/ngx-state/src/lib/rx-state.service.ts",
         "ext": ".ts",
-        "mtime": 1581462003256.216
+        "mtime": 1584065041030.7222
       },
       {
         "file": "libs/ngx-state/src/test-setup.ts",
         "ext": ".ts",
-        "mtime": 1581458929019.1155
+        "mtime": 1584065041031.719
       },
       {
         "file": "libs/ngx-state/tsconfig.json",
         "ext": ".json",
-        "mtime": 1581458929017.1213
+        "mtime": 1584065041032.7163
       },
       {
         "file": "libs/ngx-state/tsconfig.lib.json",
         "ext": ".json",
-        "mtime": 1581458929012.1355
+        "mtime": 1584065041033.7148
       },
       {
         "file": "libs/ngx-state/tsconfig.lib.prod.json",
         "ext": ".json",
-        "mtime": 1581458929013.135
+        "mtime": 1584065041034.7117
       },
       {
         "file": "libs/ngx-state/tsconfig.spec.json",
         "ext": ".json",
-        "mtime": 1581458929017.1213
+        "mtime": 1584065041035.7083
       },
       {
         "file": "libs/ngx-state/tslint.json",
         "ext": ".json",
-        "mtime": 1581458929013.135
+        "mtime": 1584065041036.7058
       }
     ]
   }

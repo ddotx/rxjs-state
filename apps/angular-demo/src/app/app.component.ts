@@ -1,17 +1,48 @@
 import { Component } from '@angular/core';
-import {of} from "rxjs";
-import {coalesce} from "../../../../libs/rxjs-state/src/lib/core/operators/coalesce";
+import {coalesce, CoalesceConfig} from '@rx-state/rxjs-state';
+import {range, of} from 'rxjs';
+import {scan, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'rx-state-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  template: `
+    <h1>App</h1>
+  `
 })
 export class AppComponent {
-  title = 'angular-demo';
+  cfg1: CoalesceConfig = {
+    leading: true, 
+    trailing: true
+  };
 
-  c = of(1,2,3,4).pipe(coalesce()).subscribe(console.log)
-  d = of(3333333,2,3,4).pipe(coalesce()).subscribe(console.log)
-  r = of(3333333,2,3,4).pipe(coalesce()).subscribe(console.log)
-  s = of(3333333,2,3,4).pipe(coalesce()).subscribe(console.log)
+  stateChanges$ = range(1, 4);
+  // 1, 10
+  c = this.stateChanges$
+    .pipe(
+      tap(console.log),
+      scan((acc, curr) => acc + curr, 0),
+      coalesce(this.cfg1)
+      )
+    .subscribe(console.log);
+  d = of(3333333, 2, 3, 4)
+    .pipe(coalesce())
+    .subscribe(console.log);
+  /*r = of(3333333, 2, 3, 4)
+    .pipe(coalesce())
+    .subscribe(console.log);
+  s = of(3333333, 2, 3, 4)
+    .pipe(coalesce())
+    .subscribe(console.log);
+    */
 }
+
+
+
+// source: --abcde--------
+// start:  --^------------
+// first:  --a------------   
+
+// source: --abcde--------
+// end:    -------^-------
+// lase:   ------e--------
+// both:   --a---e--------     
