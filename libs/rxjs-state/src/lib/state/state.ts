@@ -1,5 +1,5 @@
 import {Observable, OperatorFunction, Subscribable, Subscription, Unsubscribable,} from 'rxjs';
-import {map, pluck, tap,} from 'rxjs/operators';
+import {map, pluck, tap, filter} from 'rxjs/operators';
 import {
     createAccumulationObservable,
     createSideEffectObservable,
@@ -64,6 +64,10 @@ export class State<T> implements Subscribable<any> {
         if (typeof keyOrSlice$ === 'string' && value$ !== undefined) {
             this.accumulationObservable.nextSliceObservable(
                 value$.pipe(
+                    // undefined can occur if:
+                    // - key oes not extist
+                    // - key is set to undefined
+                    filter(slice => slice !== undefined),
                     map(slice => ({[keyOrSlice$]: slice}))
                     // @TODO fix typing
                 ) as any
