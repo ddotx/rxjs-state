@@ -32,7 +32,7 @@ describe('coalesce', () => {
 
   fdescribe('for leading config option', () => {
 
-    fit(
+    it(
       'should NOT pass the leading values if set to false',
       marbles(m => {
         const source = m.cold('abcde|');
@@ -67,71 +67,92 @@ describe('coalesce', () => {
       marbles(m => {
         const source = m.cold('abcde-----------abcde|');
         m.expect(source.pipe(coalesce({ leading: true }))).toBeObservable(
-          'a--------------a----|'
+          'a---------------a----|'
         );
       })
     );
   });
 
-  describe('for trailing config option', () => {
-    it(
-      'should pass the trailing values if set to true',
-      marbles(m => {
-        const source = m.cold('abcde|');
-        m.expect(
-          source.pipe(coalesce({ leading: false, trailing: true }))
-        ).toBeObservable('----e|');
-      })
-    );
-
+  fdescribe('for trailing config option', () => {
     it(
       'should NOT pass the trailing values if set to false',
       marbles(m => {
         const source = m.cold('abcde|');
-        m.expect(
-          source.pipe(coalesce({ leading: false, trailing: false }))
-        ).toBeObservable('|');
+        m.expect(source.pipe(coalesce({ trailing: false }))).toBeObservable(
+          '-----|'
+        );
       })
     );
 
     it(
-      'should pass the trailing values over time',
+      'should NOT pass the trailing values over time if set to false',
+      marbles(m => {
+        const source = m.cold('abcde----------abcde|');
+        m.expect(source.pipe(coalesce({ trailing: false }))).toBeObservable(
+          '--------------------|'
+        );
+      })
+    );
+
+    it(
+      'should pass the trailing values if set to true',
       marbles(m => {
         const source = m.cold('abcde|');
-        m.expect(
-          source.pipe(coalesce({ leading: false, trailing: true }))
-        ).toBeObservable('v|');
+        m.expect(source.pipe(coalesce({ trailing: true }))).toBeObservable(
+          '----e|'
+        );
+      })
+    );
+
+    it(
+      'should pass the trailing values over time if set to true',
+      marbles(m => {
+        const source = m.cold('abcde-----------abcde|');
+        m.expect(source.pipe(coalesce({ trailing: true }))).toBeObservable(
+          '----e--------------e|'
+        );
       })
     );
   });
 
-  describe('for leading and trailing config option', () => {
+  fdescribe('for leading and trailing config option', () => {
     it(
-      'should pass the leading and trailing values if set to true',
+      'should NOT pass the trailing or leading values if set to false',
       marbles(m => {
         const source = m.cold('abcde|');
-        m.expect(
-          source.pipe(coalesce({ leading: false, trailing: false }))
-        ).toBeObservable('v|');
-      })
-    );
-    it(
-      'should NOT pass leading and trailing values if set to false',
-      marbles(m => {
-        const source = m.cold('abcde|');
-        m.expect(
-          source.pipe(coalesce({ leading: false, trailing: false }))
-        ).toBeObservable('v|');
+        m.expect(source.pipe(coalesce({ trailing: false, leading: false }))).toBeObservable(
+          '-----|'
+        );
       })
     );
 
     it(
-      'should pass leading and trailing values over time',
+      'should NOT pass the trailing or leading values over time if set to false',
+      marbles(m => {
+        const source = m.cold('abcde----------abcde|');
+        m.expect(source.pipe(coalesce({ trailing: false, leading: false }))).toBeObservable(
+          '--------------------|'
+        );
+      })
+    );
+
+    it(
+      'should pass the trailing and leading values if set to true',
       marbles(m => {
         const source = m.cold('abcde|');
-        m.expect(
-          source.pipe(coalesce({ leading: false, trailing: false }))
-        ).toBeObservable('v|');
+        m.expect(source.pipe(coalesce({ trailing: true, leading: true }))).toBeObservable(
+          'a---e|'
+        );
+      })
+    );
+
+    it(
+      'should pass the trailing and leading values over time if set to true',
+      marbles(m => {
+        const source = m.cold('abcde-----------abcde|');
+        m.expect(source.pipe(coalesce({ trailing: true, leading: true }))).toBeObservable(
+          'a---e----------a---e|'
+        );
       })
     );
   });

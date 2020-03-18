@@ -1,5 +1,5 @@
 import {Observable, concat, EMPTY, OperatorFunction, MonoTypeOperatorFunction, defer} from 'rxjs';
-import {publish, first,tap,filter, concat as concatWith, share,shareReplay, takeUntil,last, take,withLatestFrom, map, materialize, defaultIfEmpty, switchMap} from 'rxjs/operators';
+import {publish, first,tap,filter, concat as concatWith, share,shareReplay, throttle, takeUntil,last, take,withLatestFrom, map, materialize, defaultIfEmpty, switchMap} from 'rxjs/operators';
 import {CoalesceConfig, getCoalesceWorkConfig} from '../utils';
 
 
@@ -9,22 +9,12 @@ export function coalesce<T>(cfg?: CoalesceConfig): MonoTypeOperatorFunction<T> {
     const preparedCfg: CoalesceConfig = getCoalesceWorkConfig(cfg);
     const inputComplete$ = o.pipe(materialize());
     const animationFrameFirstEmission$ = animationFrames().pipe(
-      shareReplay(), 
       take(1)
       );
-    const first$  = o.pipe(first(),defaultIfEmpty(), tap({complete: () => console.info('first$ Complete')}));
+    const first$  = o.pipe(first(), defaultIfEmpty(), tap({complete: () => console.info('first$ Complete')}));
     const last$ = o.pipe(takeUntil(animationFrameFirstEmission$), last(), tap({complete: () => console.info('last$ Complete')}));
     return o.pipe(
-      filter(() => {
-        if (preparedCfg.leading) {
-            if (isFirstEmitted) {
-              return false;
-            }
-          isFirstEmitted = true;
-          return true
-        }
-        return true;
-      })
+      throttle(val => animationFrameFirstEmission$, preparedCfg),
     );
   };
 }
