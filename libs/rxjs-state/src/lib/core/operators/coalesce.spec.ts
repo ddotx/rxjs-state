@@ -84,10 +84,16 @@ describe('coalesce operator', () => {
 
           const result = e1.pipe(coalesce(() => e2));
 
-          expectObservable(result).toBe(expected);
-          expectSubscriptions(e1.subscriptions).toBe(e1subs);
-          expectSubscriptions(e2.subscriptions).toBe(e2subs);
-        });
+    it(
+      'should pass the trailing values over time',
+      marbles(m => {
+        const source = m.cold('abcde|');
+        m.expect(
+          source.pipe(coalesce({ leading: false, trailing: true }))
+        ).toBeObservable('v|');
+      })
+    );
+  });
 
         it('should interrupt source and duration when result is unsubscribed early', () => {
           const e1 = hot('-a-x-y-z-xyz-x-y-z----b--x-x-|');
