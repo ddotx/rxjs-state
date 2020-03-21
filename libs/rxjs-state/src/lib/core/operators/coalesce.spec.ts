@@ -1,20 +1,9 @@
 import {TestScheduler} from 'rxjs/internal/testing/TestScheduler';
 import { mergeMap, mapTo } from 'rxjs/operators';
 import { of, concat, timer } from 'rxjs';
-import {coalesce} from '@rx-state/rxjs-state';
+import {coalesce} from './coalesce.throttle-based';
 import {_} from 'lodash';
-
-export function observableMatcher(actual: any, expected: any) {
-  if (Array.isArray(actual) && Array.isArray(expected)) {
-    const passed = _.isEqual(actual, expected);
-    if (passed) {
-      return;
-    }
-    expect(actual).toEqual(expected);
-  } else {
-    expect(actual).toEqual(expected);
-  }
-}
+import {observableMatcher} from '../../../../spec/observableMatcher';
 
 /** @test {coalesce} */
 describe('coalesce operator', () =>  {
@@ -48,8 +37,8 @@ describe('coalesce operator', () =>  {
       const e1subs =   '^--------------------!';
       const e2 =  cold('----x-y-z            ');
       const e2subs = [ '-^---!                ',
-        '----------^---!       ',
-        '----------------^---! '];
+                       '----------^---!       ',
+                       '----------------^---! '];
       const expected = '-a--------b-----c----|';
 
       const result = e1.pipe(coalesce(() => e2));
@@ -405,7 +394,7 @@ describe('coalesce operator', () =>  {
         const n1Subs = [' --^------------------!     '];
         const exp =     ' --x------------------|     ';
 
-        const result = s1.pipe(coalesce(() => n1, { leading: false, trailing: true }));
+        const result = s1.pipe(coalesce(() => n1, { leading: true, trailing: true }));
         expectObservable(result).toBe(exp);
         expectSubscriptions(s1.subscriptions).toBe(s1Subs);
         expectSubscriptions(n1.subscriptions).toBe(n1Subs);
