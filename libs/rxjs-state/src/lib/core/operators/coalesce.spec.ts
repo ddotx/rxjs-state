@@ -1,8 +1,7 @@
 import {TestScheduler} from 'rxjs/internal/testing/TestScheduler';
-import { mergeMap, mapTo } from 'rxjs/operators';
+import {mergeMap, mapTo, tap} from 'rxjs/operators';
 import { of, concat, timer } from 'rxjs';
 import {coalesce} from './coalesce.throttle-based';
-import {_} from 'lodash';
 import {observableMatcher} from '../../../../spec/observableMatcher';
 
 /** @test {coalesce} */
@@ -338,6 +337,24 @@ describe('coalesce operator', () =>  {
     });
   });
 
+  describe('coalesce(fn, { leading: true, trailing: true })', () => {
+
+    it('should work for individual values', () => {
+      testScheduler.run(({cold, hot, expectObservable, expectSubscriptions}) => {
+        const s1 =  hot('-^-x------------------|     ');
+        const s1Subs =  ' ^--------------------!     ';
+        const n1 = cold('   ------------------------|');
+        const n1Subs = ['--^------------------!      '];
+        const exp =     '--x------------------|      ';
+
+        const result = s1.pipe(coalesce(() => n1, {leading: true, trailing: true}));
+        expectObservable(result).toBe(exp);
+        expectSubscriptions(s1.subscriptions).toBe(s1Subs);
+        expectSubscriptions(n1.subscriptions).toBe(n1Subs);
+      });
+    });
+  });
+
   it('should raise error when promise rejects', () => {
     const e1 = concat(of(1),
       timer(10).pipe(mapTo(2)),
@@ -366,35 +383,17 @@ describe('coalesce operator', () =>  {
     );
   });
 
-  describe('coalesce(fn, { leading: true, trailing: true })', () => {
-
-    it('should work for individual values', () => {
-      testScheduler.run(({cold, hot, expectObservable, expectSubscriptions}) => {
-        const s1 =  hot('-^-x------------------|     ');
-        const s1Subs =  ' ^--------------------!     ';
-        const n1 = cold('   ------------------------|');
-        const n1Subs = ['--^------------------!      '];
-        const exp =     '--x------------------|      ';
-
-        const result = s1.pipe(coalesce(() => n1, {leading: true, trailing: true}));
-        expectObservable(result).toBe(exp);
-        expectSubscriptions(s1.subscriptions).toBe(s1Subs);
-        expectSubscriptions(n1.subscriptions).toBe(n1Subs);
-      });
-    });
-  });
-
   describe('coalesce(fn, { leading: false, trailing: true })', () => {
 
     it('should work for individual values', () => {
       testScheduler.run(({cold, hot, expectObservable, expectSubscriptions}) => {
-        const s1 =  hot('-^-x------------------|     ');
-        const s1Subs =  ' ^--------------------!     ';
-        const n1 = cold('   ------------------------|');
-        const n1Subs = [' --^------------------!     '];
-        const exp =     ' --x------------------|     ';
+        const s1 =  hot('-x------------------|     ');
+        const s1Subs =  '^-------------------!     ';
+        const n1 = cold(' -------|                 ');
+        const n1Subs =  '-^------!                 ';
+        const exp =     '--------x-----------|     ';
 
-        const result = s1.pipe(coalesce(() => n1, { leading: true, trailing: true }));
+        const result = s1.pipe(coalesce(() => n1, { leading: false, trailing: true }));
         expectObservable(result).toBe(exp);
         expectSubscriptions(s1.subscriptions).toBe(s1Subs);
         expectSubscriptions(n1.subscriptions).toBe(n1Subs);

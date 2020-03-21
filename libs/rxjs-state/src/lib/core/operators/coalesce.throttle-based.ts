@@ -73,14 +73,14 @@ class CoalesceOperator<T> implements Operator<T, T> {
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source.subscribe(
-      new ThrottleSubscriber(subscriber, this.durationSelector, this.leading, this.trailing)
+      new CoalesceSubscriber(subscriber, this.durationSelector, this.leading, this.trailing)
     );
   }
 }
 
 
 
-class ThrottleSubscriber<T, R> extends OuterSubscriber<T, R> {
+class CoalesceSubscriber<T, R> extends OuterSubscriber<T, R> {
   private _coalesced: Subscription | null | undefined;
   private _sendValue: T | null = null;
   private _hasValue = false;
@@ -97,22 +97,32 @@ class ThrottleSubscriber<T, R> extends OuterSubscriber<T, R> {
     this._sendValue = value;
 
     if (!this._coalesced) {
-      if (this._leading) {
-        this.send();
-      } else {
-        this.coalesce(value);
-      }
+      this.send();
     }
   }
 
   private send() {
-    const { _hasValue, _sendValue } = this;
+    const { _hasValue, _sendValue, _leading, _trailing} = this;
     if (_hasValue) {
-      this.destination.next(_sendValue!);
-      this.coalesce(_sendValue!);
+      if (_leading && !_trailing) {
+        this.destination.next(_sendValue!);
+        this.coalesce(_sendValue!);
+        this._hasValue = false;
+        this._sendValue = null;
+      }
+      else if (!_leading && _trailing && _sendValue) {
+        this.coalesce(_sendValue!);
+      }
     }
-    this._hasValue = false;
-    this._sendValue = null;
+  }
+
+  private exhaustLastValue() {
+    const {_hasValue, _sendValue,} = this;
+    if (_hasValue && _sendValue) {
+      this.destination.next(_sendValue!);
+      this._hasValue = false;
+      this._sendValue = null;
+    }
   }
 
   private coalesce(value: T): void {
@@ -139,7 +149,7 @@ class ThrottleSubscriber<T, R> extends OuterSubscriber<T, R> {
     this._coalesced = null;
 
     if (_trailing) {
-      this.send();
+      this.exhaustLastValue();
     }
   }
 
