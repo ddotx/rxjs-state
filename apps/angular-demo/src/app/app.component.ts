@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import {coalesce, CoalesceConfig} from '@rx-state/rxjs-state';
-import {range, of} from 'rxjs';
-import {scan, tap} from 'rxjs/operators';
+import {coalesce, CoalesceConfig, defaultCoalesceDurationSelector} from '@rx-state/rxjs-state';
+import { range, of, interval } from 'rxjs';
+import { animationFrame } from 'rxjs/internal/scheduler/animationFrame';
+import { scan, tap, throttle } from 'rxjs/operators';
 
 @Component({
   selector: 'rx-state-root',
@@ -11,22 +12,25 @@ import {scan, tap} from 'rxjs/operators';
 })
 export class AppComponent {
   cfg1: CoalesceConfig = {
-    leading: true, 
+    leading: true,
     trailing: true
   };
 
-  stateChanges$ = range(1, 4);
+  durationSelector$ = of(1, 2, 3, 4);
+
+  stateChanges$ = range(1, 25)
   // 1, 10
   c = this.stateChanges$
     .pipe(
-      tap(console.log),
       scan((acc, curr) => acc + curr, 0),
-      coalesce(this.cfg1)
+      // tap(console.log),
+      coalesce(defaultCoalesceDurationSelector, this.cfg1),
+      // throttle(value => interval(10), this.cfg1)
       )
     .subscribe(console.log);
-  d = of(3333333, 2, 3, 4)
+  /*d = of(3333333, 2, 3, 4)
     .pipe(coalesce())
-    .subscribe(console.log);
+    .subscribe(console.log);*/
   /*r = of(3333333, 2, 3, 4)
     .pipe(coalesce())
     .subscribe(console.log);
@@ -40,9 +44,9 @@ export class AppComponent {
 
 // source: --abcde--------
 // start:  --^------------
-// first:  --a------------   
+// first:  --a------------
 
 // source: --abcde--------
 // end:    -------^-------
 // lase:   ------e--------
-// both:   --a---e--------     
+// both:   --a---e--------

@@ -7,6 +7,7 @@ import {
   Subscription,
   TeardownLogic
 } from 'rxjs';
+import { first } from 'rxjs/operators';
 import {CoalesceConfig} from '../utils';
 import {OuterSubscriber, subscribeToResult, InnerSubscriber} from 'rxjs/internal-compatibility';
 
@@ -14,6 +15,8 @@ export const defaultCoalesceConfig: CoalesceConfig = {
   leading: true,
   trailing: false
 };
+
+export const defaultCoalesceDurationSelector = <T>(value: T) => animationFrames();
 
 /**
  * Emits a value from the source Observable, then ignores subsequent source
@@ -57,10 +60,11 @@ export const defaultCoalesceConfig: CoalesceConfig = {
  * to `{ leading: true, trailing: false }`.
  * @return {Observable<T>} An Observable that performs the throttle operation to
  * limit the rate of emissions from the source.
- * @name throttle
+ * @name coalesce
  */
-export function coalesce<T>(durationSelector: (value: T) => SubscribableOrPromise<any>,
-                            config: CoalesceConfig = defaultCoalesceConfig): MonoTypeOperatorFunction<T> {
+export function coalesce<T>(
+    durationSelector: (value: T) => SubscribableOrPromise<any> = defaultCoalesceDurationSelector,
+    config: CoalesceConfig = defaultCoalesceConfig): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => source.lift(new CoalesceOperator(durationSelector, !!config.leading, !!config.trailing));
 }
 
@@ -70,7 +74,7 @@ class CoalesceOperator<T> implements Operator<T, T> {
               private trailing: boolean) {
   }
 
-  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
+  call(subscriber: Subscriber<T>, source: Observable<any>): TeardownLogic {
     return source.subscribe(
       new CoalesceSubscriber(subscriber, this.durationSelector, this.leading, this.trailing)
     );
@@ -79,10 +83,11 @@ class CoalesceOperator<T> implements Operator<T, T> {
 
 /**
  */
-class CoalesceSubscriber<T, R> extends OuterSubscriber<T, R> {
+class CoalesceSubscriber<T> extends OuterSubscriber<T, T> {
   private _throttled: Subscription | null | undefined;
-  private _sendValue: T | null = null;
-  private _hasValue = false;
+  private _nextValue: T | null = null;
+  private _lastSentValue: T | null = null;
+  private index: number = 0;
 
   constructor(protected destination: Subscriber<T>,
               private durationSelector: (value: T) => SubscribableOrPromise<number>,
@@ -92,32 +97,67 @@ class CoalesceSubscriber<T, R> extends OuterSubscriber<T, R> {
   }
 
   protected _next(value: T): void {
-    this._hasValue = true;
-    this._sendValue = value;
-
+    this._nextValue = value;
     if (!this._throttled) {
       if (this._leading) {
-        this.send();
-      } else {
-        this.throttle(value);
+        this.sendNextValue();
+      }
+      try {
+        const index = this.index++;
+        const duration$ = this.tryDurationSelector(value);
+        this.throttle(duration$, value, index);
+      } catch (error) {
+        this.destination.error(error);
       }
     }
   }
 
-  private send() {
-    const {_hasValue, _sendValue} = this;
-    if (_hasValue) {
-      this.destination.next(_sendValue!);
-      this.throttle(_sendValue!);
+  protected _complete(): void {
+    const {_throttled} = this;
+    if (!_throttled || _throttled.closed) {
+      this.sendNextValue();
+      super._complete();
     }
-    this._hasValue = false;
-    this._sendValue = null;
+    this.unsubscribe();
   }
 
-  private throttle(value: T): void {
-    const duration = this.tryDurationSelector(value);
-    if (!!duration) {
-      this.add(this._throttled = subscribeToResult(this, duration));
+  notifyNext(outerValue: T, innerValue: T,
+             outerIndex: number, innerIndex: number,
+             innerSub: InnerSubscriber<T, T>): void {
+    if (this._trailing) {
+      this.sendNextValue();
+    }
+  }
+
+  notifyComplete(innerSub: Subscription): void {
+    const destination = this.destination as Subscription;
+    destination.remove(innerSub);
+    this._throttled = null;
+    if (this.isStopped) {
+      super._complete();
+    }
+  }
+
+  private sendNextValue(): void {
+    if (this._lastSentValue !== this._nextValue) {
+      this.destination.next(this._lastSentValue = this._nextValue);
+    }
+  }
+
+  private throttle(duration$: SubscribableOrPromise<any>, value: T, index: number): void {
+    const innerSubscription = this._throttled;
+    if (innerSubscription) {
+      innerSubscription.unsubscribe();
+    }
+    const innerSubscriber = new InnerSubscriber(this, value, index);
+    const destination = this.destination as Subscription;
+    destination.add(innerSubscriber);
+    this._throttled = subscribeToResult(this, (duration$ as Observable<any>).pipe(first()), undefined, undefined, innerSubscriber);
+    // The returned subscription will usually be the subscriber that was
+    // passed. However, interop subscribers will be wrapped and for
+    // unsubscriptions to chain correctly, the wrapper needs to be added, too.
+    if (this._throttled !== innerSubscriber) {
+      destination.add(this._throttled);
     }
   }
 
@@ -129,26 +169,39 @@ class CoalesceSubscriber<T, R> extends OuterSubscriber<T, R> {
       return null;
     }
   }
-
-  private throttlingDone() {
-    const {_throttled, _trailing} = this;
-    if (_throttled) {
-      _throttled.unsubscribe();
-    }
-    this._throttled = null;
-
-    if (_trailing) {
-      this.send();
-    }
-  }
-
-  notifyNext(outerValue: T, innerValue: R,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, R>): void {
-    this.throttlingDone();
-  }
-
-  notifyComplete(): void {
-    this.throttlingDone();
-  }
 }
+
+// @TODO delete when decide for rxjs target version
+export interface TimestampProvider {
+  now(): number;
+}
+
+
+export function animationFrames(timestampProvider: TimestampProvider = Date) {
+  return timestampProvider === Date ? DEFAULT_ANIMATION_FRAMES : animationFramesFactory(timestampProvider);
+}
+
+/**
+ * Does the work of creating the observable for `animationFrames`.
+ * @param timestampProvider The timestamp provider to use to create the observable
+ */
+function animationFramesFactory(timestampProvider: TimestampProvider) {
+  return new Observable<number>(subscriber => {
+    let id: number;
+    const start = timestampProvider.now();
+    const run = () => {
+      subscriber.next(timestampProvider.now() - start);
+      if (!subscriber.closed) {
+        id = requestAnimationFrame(run);
+      }
+    };
+    id = requestAnimationFrame(run);
+    return () => cancelAnimationFrame(id);
+  });
+}
+
+/**
+ * In the common case, where `Date` is passed to `animationFrames` as the default,
+ * we use this shared observable to reduce overhead.
+ */
+const DEFAULT_ANIMATION_FRAMES = animationFramesFactory(Date);
