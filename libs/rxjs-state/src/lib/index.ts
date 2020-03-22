@@ -1,2 +1,10 @@
-export {select, stateful, coalesce, CoalesceConfig, defaultCoalesceDurationSelector, createAccumulationObservable, createSideEffectObservable} from './core'
+export {
+  select,
+  stateful,
+  animationFrames,
+  coalesce,
+  CoalesceConfig,
+  createAccumulationObservable,
+  createSideEffectObservable
+} from './core'
 export {State} from './state'

@@ -9,7 +9,6 @@ import {
 } from 'rxjs';
 import {CoalesceConfig} from '../utils';
 import {OuterSubscriber, subscribeToResult, InnerSubscriber} from 'rxjs/internal-compatibility';
-import { defaultCoalesceDurationSelector } from './defaultCoalesceDurationSelector';
 
 export const defaultCoalesceConfig: CoalesceConfig = {
   leading: false,
@@ -61,7 +60,7 @@ export const defaultCoalesceConfig: CoalesceConfig = {
  * limit the rate of emissions from the source.
  * @name coalesce
  */
-export function coalesce<T>(durationSelector: (value: T) => SubscribableOrPromise<any> = defaultCoalesceDurationSelector,
+export function coalesce<T>(durationSelector: (value: T) => SubscribableOrPromise<any>,
                             config: CoalesceConfig = defaultCoalesceConfig): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => source.lift(new CoalesceOperator(durationSelector, !!config.leading, !!config.trailing));
 }

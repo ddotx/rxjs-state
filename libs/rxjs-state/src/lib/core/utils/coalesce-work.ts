@@ -6,7 +6,7 @@ export interface CoalescingContext {
 
 export interface CoalesceConfig {
   context?: CoalescingContext;
-  // executionContextRef?: (cb: () => void) => number;
+  executionContextRef?: (cb: () => void) => number;
   leading?: boolean;
   trailing?: boolean;
 }

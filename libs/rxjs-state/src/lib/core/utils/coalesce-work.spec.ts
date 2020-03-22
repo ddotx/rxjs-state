@@ -1,8 +1,6 @@
 import {
   CoalesceConfig,
-  coalesceWork,
   getCoalesceWorkConfig,
-  isScheduling
 } from "./coalesce-work";
 import {getGlobalThis} from "./get-global-this";
 
@@ -46,46 +44,5 @@ fdescribe('getCoalesceWorkConfig', () => {
     const cfg = getCoalesceWorkConfig({context, executionContextRef});
     expect((cfg.context as any).executionContextId).toBe(42);
     expect((cfg as any).executionContextRef()).toBe(21);
-  });
-});
-
-fdescribe('isScheduling', () => {
-  it('should return false if the contexts executionContextId is -1', () => {
-    expect(isScheduling({context: {executionContextId: -1}})).toBe(false);
-  });
-
-  it('should return false if the contexts executionContextId is undefined', () => {
-    expect(isScheduling({context: {executionContextId: undefined}})).toBe(false);
-  });
-  it('should return true if the contexts executionContextId is other than undefined or -1', () => {
-    expect(isScheduling({context: {executionContextId: 42}})).toBe(true);
-  });
-});
-
-fdescribe('coalesceWork', () => {
-  it('should execute work if the executionContext is not scheduled', () => {
-    const work = jasmine.createSpy('work');
-    coalesceWork(work);
-    expect(work).toHaveBeenCalled();
-  });
-  it('should not execute work if the executionContext is scheduled', () => {
-    const work = jasmine.createSpy('work');
-    coalesceWork(work);
-    expect(work).toHaveBeenCalled();
-    const work2 = jasmine.createSpy('work2');
-    coalesceWork(work2);
-    expect(work2).not.toHaveBeenCalled();
-  });
-  it('should again execute work if the executionContext scheduling is done', () => {
-    const work = jasmine.createSpy('work');
-    coalesceWork(work);
-    expect(work).toHaveBeenCalled();
-    const work2 = jasmine.createSpy('work2');
-    coalesceWork(work2);
-    expect(work2).not.toHaveBeenCalled();
-    setTimeout(() => {
-      coalesceWork(work2);
-      expect(work2).toHaveBeenCalled();
-    }, 10)
   });
 });
