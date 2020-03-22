@@ -16,7 +16,10 @@ describe('coalesce operator additional logic', () => {
 
   describe('coalesce(fn, { leading: true, trailing: true })', () => {
     beforeEach(() => {
-      coalesceConfig = {leading: true, trailing: true};
+      coalesceConfig = {
+        leading: true,
+        trailing: true
+      };
     });
 
     it('should have the right config', () => {
@@ -44,7 +47,7 @@ describe('coalesce operator additional logic', () => {
     });
 
     it('should emit first and last for async values when durationSelector is EMPTY', () => {
-      testScheduler.run(({cold, expectObservable, expectSubscriptions}) => {
+      testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
         const s1 = cold('---abcdef---|');
         const s1Subs = '^-----------!';
         const n1 = cold('   -----|    ');
@@ -59,7 +62,7 @@ describe('coalesce operator additional logic', () => {
     });
 
     it('should emit first and last for sync values when durationSelector is EMPTY', () => {
-      testScheduler.run(({cold, expectObservable, expectSubscriptions}) => {
+      testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
         const s1 = cold('--(abcdef)--|');
         const s1Subs = '^-----------!';
         const n1 = cold('  |          ');
@@ -72,9 +75,9 @@ describe('coalesce operator additional logic', () => {
         expectSubscriptions(n1.subscriptions).toBe(n1Subs);
       });
     });
-    
+
     it('should emit first and last delayed for sync values when durationSelector is longer', () => {
-      testScheduler.run(({cold, expectObservable, expectSubscriptions}) => {
+      testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
         const s1 = cold('--(abcdef)--|');
         const s1Subs = '^-----------!';
         const n1 = cold('  --------|  ');
@@ -89,16 +92,17 @@ describe('coalesce operator additional logic', () => {
     });
 
     it('should emit first and last for sync values when durationSelector is animationFrames', () => {
-      testScheduler.run(({cold, expectObservable, expectSubscriptions}) => {
+      testScheduler.run(({ cold, expectObservable, expectSubscriptions }) => {
         const durationSelector = () => animationFrames().pipe(take(1));
         const s1 = cold('--(abcdef)--|');
         const s1Subs = '^-----------!';
         const exp = '--(af)------|';
 
         const result = s1.pipe(coalesce(durationSelector, coalesceConfig));
-         expectObservable(result).toBe(exp);
+        expectObservable(result).toBe(exp);
+      });
+
+
+    });
   });
-
-
 });
-  });

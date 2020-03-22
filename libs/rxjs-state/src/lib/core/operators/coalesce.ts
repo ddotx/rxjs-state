@@ -10,14 +10,12 @@ import {
 import { first } from 'rxjs/operators';
 import {CoalesceConfig} from '../utils';
 import {OuterSubscriber, subscribeToResult, InnerSubscriber} from 'rxjs/internal-compatibility';
-import {animationFrames} from '../projections';
+import { defaultCoalesceDurationSelector } from './defaultCoalesceDurationSelector';
 
 export const defaultCoalesceConfig: CoalesceConfig = {
   leading: true,
   trailing: false
 };
-
-export const defaultCoalesceDurationSelector = <T>(value: T) => animationFrames();
 
 /**
  * Emits a value from the source Observable, then ignores subsequent source

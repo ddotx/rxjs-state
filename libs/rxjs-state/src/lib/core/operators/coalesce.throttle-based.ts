@@ -11,8 +11,8 @@ import {CoalesceConfig} from '../utils';
 import {OuterSubscriber, subscribeToResult, InnerSubscriber} from 'rxjs/internal-compatibility';
 
 export const defaultCoalesceConfig: CoalesceConfig = {
-  leading: true,
-  trailing: false
+  leading: false,
+  trailing: true
 };
 
 /**
@@ -102,22 +102,19 @@ class CoalesceSubscriber<T, R> extends OuterSubscriber<T, R> {
   }
 
   private send() {
-    const { _hasValue, _sendValue, _leading, _trailing} = this;
+    const { _hasValue, _sendValue, _leading} = this;
     if (_hasValue) {
       if (_leading) {
         this.destination.next(_sendValue!);
-        this.coalesce(_sendValue!);
         this._hasValue = false;
         this._sendValue = null;
       }
-      else if (!_leading && _trailing && _sendValue) {
-        this.coalesce(_sendValue!);
-      }
+      this.coalesce(_sendValue!);
     }
   }
 
   private exhaustLastValue() {
-    const {_hasValue, _sendValue,} = this;
+    const {_hasValue, _sendValue} = this;
     if (_hasValue && _sendValue) {
       this.destination.next(_sendValue!);
       this._hasValue = false;
