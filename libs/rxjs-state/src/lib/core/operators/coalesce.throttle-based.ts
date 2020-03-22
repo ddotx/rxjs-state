@@ -104,7 +104,7 @@ class CoalesceSubscriber<T, R> extends OuterSubscriber<T, R> {
   private send() {
     const { _hasValue, _sendValue, _leading, _trailing} = this;
     if (_hasValue) {
-      if (_leading && !_trailing) {
+      if (_leading) {
         this.destination.next(_sendValue!);
         this.coalesce(_sendValue!);
         this._hasValue = false;
