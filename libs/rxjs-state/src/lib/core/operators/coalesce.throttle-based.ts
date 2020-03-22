@@ -9,10 +9,11 @@ import {
 } from 'rxjs';
 import {CoalesceConfig} from '../utils';
 import {OuterSubscriber, subscribeToResult, InnerSubscriber} from 'rxjs/internal-compatibility';
+import { defaultCoalesceDurationSelector } from './defaultCoalesceDurationSelector';
 
 export const defaultCoalesceConfig: CoalesceConfig = {
-  leading: true,
-  trailing: false
+  leading: false,
+  trailing: true
 };
 
 /**
@@ -60,7 +61,7 @@ export const defaultCoalesceConfig: CoalesceConfig = {
  * limit the rate of emissions from the source.
  * @name coalesce
  */
-export function coalesce<T>(durationSelector: (value: T) => SubscribableOrPromise<any>,
+export function coalesce<T>(durationSelector: (value: T) => SubscribableOrPromise<any> = defaultCoalesceDurationSelector,
                             config: CoalesceConfig = defaultCoalesceConfig): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => source.lift(new CoalesceOperator(durationSelector, !!config.leading, !!config.trailing));
 }
@@ -93,6 +94,7 @@ class CoalesceSubscriber<T, R> extends OuterSubscriber<T, R> {
   }
 
   protected _next(value: T): void {
+    console.info('next value ' + value);
     this._hasValue = true;
     this._sendValue = value;
 
@@ -102,22 +104,21 @@ class CoalesceSubscriber<T, R> extends OuterSubscriber<T, R> {
   }
 
   private send() {
-    const { _hasValue, _sendValue, _leading, _trailing} = this;
+    const { _hasValue, _sendValue, _leading} = this;
     if (_hasValue) {
-      if (_leading && !_trailing) {
+      if (_leading) {
+        console.info('send leading value value ' + _sendValue);
         this.destination.next(_sendValue!);
-        this.coalesce(_sendValue!);
         this._hasValue = false;
         this._sendValue = null;
       }
-      else if (!_leading && _trailing && _sendValue) {
-        this.coalesce(_sendValue!);
-      }
+      this.coalesce(_sendValue!);
     }
   }
 
   private exhaustLastValue() {
-    const {_hasValue, _sendValue,} = this;
+    const {_hasValue, _sendValue} = this;
+    console.info('exhaustValue ' + _sendValue);
     if (_hasValue && _sendValue) {
       this.destination.next(_sendValue!);
       this._hasValue = false;
