@@ -94,7 +94,6 @@ class CoalesceSubscriber<T, R> extends OuterSubscriber<T, R> {
   }
 
   protected _next(value: T): void {
-    console.info('next value ' + value);
     this._hasValue = true;
     this._sendValue = value;
 
@@ -107,7 +106,6 @@ class CoalesceSubscriber<T, R> extends OuterSubscriber<T, R> {
     const { _hasValue, _sendValue, _leading} = this;
     if (_hasValue) {
       if (_leading) {
-        console.info('send leading value value ' + _sendValue);
         this.destination.next(_sendValue!);
         this._hasValue = false;
         this._sendValue = null;
@@ -118,7 +116,6 @@ class CoalesceSubscriber<T, R> extends OuterSubscriber<T, R> {
 
   private exhaustLastValue() {
     const {_hasValue, _sendValue} = this;
-    console.info('exhaustValue ' + _sendValue);
     if (_hasValue && _sendValue) {
       this.destination.next(_sendValue!);
       this._hasValue = false;
