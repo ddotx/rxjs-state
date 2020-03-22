@@ -9,11 +9,14 @@ import {
 } from 'rxjs';
 import {CoalesceConfig} from '../utils';
 import {OuterSubscriber, subscribeToResult, InnerSubscriber} from 'rxjs/internal-compatibility';
+import {generateFrames} from '../projections';
 
 export const defaultCoalesceConfig: CoalesceConfig = {
   leading: false,
   trailing: true
 };
+
+export const defaultCoalesceDurationSelector = <T>(value: T) => generateFrames();
 
 /**
  * Emits a value from the source Observable, then ignores subsequent source
@@ -60,7 +63,7 @@ export const defaultCoalesceConfig: CoalesceConfig = {
  * limit the rate of emissions from the source.
  * @name coalesce
  */
-export function coalesce<T>(durationSelector: (value: T) => SubscribableOrPromise<any>,
+export function coalesce<T>(durationSelector: (value: T) => SubscribableOrPromise<any> = defaultCoalesceDurationSelector,
                             config: CoalesceConfig = defaultCoalesceConfig): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => source.lift(new CoalesceOperator(durationSelector, !!config.leading, !!config.trailing));
 }

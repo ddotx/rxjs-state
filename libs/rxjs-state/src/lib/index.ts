@@ -1,5 +1,7 @@
+import {generateFrames} from './core/projections/generateFrames';
+
 export {
-  animationFrames,
+  generateFrames,
   select,
   stateful,
   coalesce,

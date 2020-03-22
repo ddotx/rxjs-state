@@ -1,4 +1,4 @@
-import {animationFrames, CoalesceConfig} from '@rx-state/rxjs-state';
+import {generateFrames, CoalesceConfig} from '@rx-state/rxjs-state';
 import {TestScheduler} from 'rxjs/internal/testing/TestScheduler';
 import {mapTo, mergeMap, mergeMapTo} from 'rxjs/operators';
 import {concat, of, timer} from 'rxjs';
@@ -510,9 +510,9 @@ describe('coalesce operator', () => {
         });
       });
 
-      it('should emit last for sync values when durationSelector is animationFrames', () => {
+      it('should emit last for sync values when durationSelector is generateFrames', () => {
         testScheduler.run(({cold, expectObservable}) => {
-          const durationSelector = () => animationFrames();
+          const durationSelector = () => generateFrames();
           const s1 = cold('(abcdef)|');
           const exp =     '--------(f|)';
 
@@ -521,8 +521,8 @@ describe('coalesce operator', () => {
         });
       });
 
-      it('should emit last for multiple sync values when durationSelector is animationFrames', () => {
-        const durationSelector = () => animationFrames();
+      it('should emit last for multiple sync values when durationSelector is generateFrames', () => {
+        const durationSelector = () => generateFrames();
         const e1 = concat(of(1, 2, 3),
           timer(10).pipe(mergeMapTo(of(4, 5, 6))),
           timer(10).pipe(mergeMapTo(of(7, 8, 9))),
@@ -561,7 +561,7 @@ describe('coalesce operator', () => {
         let microRes;
         let syncRes;
         const s1 = of(1);
-        const s2 = animationFrames();
+        const s2 = generateFrames();
         expect(microRes).toBe(undefined);
         expect(sync).toBe(undefined);
         sync = 'test';
@@ -620,9 +620,9 @@ describe('coalesce operator', () => {
         });
       });
 
-      it('should emit first and last for sync values when durationSelector is animationFrames', () => {
+      it('should emit first and last for sync values when durationSelector is generateFrames', () => {
         testScheduler.run(({cold, expectObservable}) => {
-          const durationSelector = () => animationFrames();
+          const durationSelector = () => generateFrames();
           const s1 = cold('(abcdef)|');
           const exp =     'a-------(f|)';
 
@@ -631,8 +631,8 @@ describe('coalesce operator', () => {
         });
       });
 
-      it('should emit first and last for multiple sync values when durationSelector is animationFrames', () => {
-        const durationSelector = () => animationFrames();
+      it('should emit first and last for multiple sync values when durationSelector is generateFrames', () => {
+        const durationSelector = () => generateFrames();
         const e1 = concat(of(1, 2, 3),
           timer(10).pipe(mergeMapTo(of(4, 5, 6))),
           timer(10).pipe(mergeMapTo(of(7, 8, 9))),

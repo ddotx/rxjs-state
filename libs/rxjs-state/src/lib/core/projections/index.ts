@@ -1,1 +1,1 @@
-export * from './animationFrames';
+export * from './generateFrames';

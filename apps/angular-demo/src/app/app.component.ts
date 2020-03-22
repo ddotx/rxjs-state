@@ -1,8 +1,7 @@
 import {Component} from '@angular/core';
-import {coalesce, CoalesceConfig, animationFrames} from '@rx-state/rxjs-state';
-import {concat, range, timer} from 'rxjs';
-import {filter, tap} from 'rxjs/operators';
-import {time} from '../../../../libs/rxjs-state/spec/marble-helpers';
+import {coalesce, CoalesceConfig, generateFrames} from '@rx-state/rxjs-state';
+import {concat, range} from 'rxjs';
+import {tap} from 'rxjs/operators';
 
 @Component({
   selector: 'rx-state-root',
@@ -14,19 +13,19 @@ import {time} from '../../../../libs/rxjs-state/spec/marble-helpers';
   `
 })
 export class AppComponent {
-  animationFrames$ = animationFrames();
+  animationFrames$ = generateFrames();
   cfg1: CoalesceConfig = {
     leading: true,
     trailing: true
   };
 
   stateChanges$ = concat(range(1, 10),
-  //  timer(1000).pipe(filter(v => false))
+    //  timer(1000).pipe(filter(v => false))
   );
   // 1, 10
   o1$ = this.stateChanges$
     .pipe(
-      coalesce(() => animationFrames(), this.cfg1),
+      coalesce(() => generateFrames(), this.cfg1),
       tap(console.log)
     )
 }
