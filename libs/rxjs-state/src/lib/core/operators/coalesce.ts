@@ -7,14 +7,12 @@ import {
   Subscription,
   TeardownLogic
 } from 'rxjs';
-import { first } from 'rxjs/operators';
 import {CoalesceConfig} from '../utils';
 import {OuterSubscriber, subscribeToResult, InnerSubscriber} from 'rxjs/internal-compatibility';
-import { defaultCoalesceDurationSelector } from './defaultCoalesceDurationSelector';
 
 export const defaultCoalesceConfig: CoalesceConfig = {
-  leading: true,
-  trailing: false
+  leading: false,
+  trailing: true
 };
 
 /**
@@ -39,10 +37,10 @@ export const defaultCoalesceConfig: CoalesceConfig = {
  * Emit clicks at a rate of at most one click per second
  * ```ts
  * import { fromEvent, interval } from 'rxjs';
- * import { throttle } from 'rxjs/operators';
+ * import { coalesce } from 'rxjs/operators';
  *
  * const clicks = fromEvent(document, 'click');
- * const result = clicks.pipe(throttle(ev => interval(1000)));
+ * const result = clicks.pipe(coalesce(ev => interval(1000)));
  * result.subscribe(x => console.log(x));
  * ```
  *
@@ -50,6 +48,7 @@ export const defaultCoalesceConfig: CoalesceConfig = {
  * @see {@link debounce}
  * @see {@link delayWhen}
  * @see {@link sample}
+ * @see {@link throttle}
  * @see {@link throttleTime}
  *
  * @param {function(value: T): SubscribableOrPromise} durationSelector A function
@@ -57,13 +56,12 @@ export const defaultCoalesceConfig: CoalesceConfig = {
  * duration for each source value, returned as an Observable or a Promise.
  * @param {Object} config a configuration object to define `leading` and `trailing` behavior. Defaults
  * to `{ leading: true, trailing: false }`.
- * @return {Observable<T>} An Observable that performs the throttle operation to
+ * @return {Observable<T>} An Observable that performs the coalesce operation to
  * limit the rate of emissions from the source.
  * @name coalesce
  */
-export function coalesce<T>(
-    durationSelector: (value: T) => SubscribableOrPromise<any> = defaultCoalesceDurationSelector,
-    config: CoalesceConfig = defaultCoalesceConfig): MonoTypeOperatorFunction<T> {
+export function coalesce<T>(durationSelector: (value: T) => SubscribableOrPromise<any>,
+                            config: CoalesceConfig = defaultCoalesceConfig): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => source.lift(new CoalesceOperator(durationSelector, !!config.leading, !!config.trailing));
 }
 
@@ -73,20 +71,19 @@ class CoalesceOperator<T> implements Operator<T, T> {
               private trailing: boolean) {
   }
 
-  call(subscriber: Subscriber<T>, source: Observable<any>): TeardownLogic {
+  call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source.subscribe(
       new CoalesceSubscriber(subscriber, this.durationSelector, this.leading, this.trailing)
     );
   }
 }
 
-/**
- */
-class CoalesceSubscriber<T> extends OuterSubscriber<T, T> {
-  private _throttled: Subscription | null | undefined;
-  private _nextValue: T | null = null;
-  private _lastSentValue: T | null = null;
-  private index: number = 0;
+
+
+class CoalesceSubscriber<T, R> extends OuterSubscriber<T, R> {
+  private _coalesced: Subscription | null | undefined;
+  private _sendValue: T | null = null;
+  private _hasValue = false;
 
   constructor(protected destination: Subscriber<T>,
               private durationSelector: (value: T) => SubscribableOrPromise<number>,
@@ -96,67 +93,44 @@ class CoalesceSubscriber<T> extends OuterSubscriber<T, T> {
   }
 
   protected _next(value: T): void {
-    this._nextValue = value;
-    if (!this._throttled) {
-      if (this._leading) {
-        this.sendNextValue();
-      }
-      try {
-        const index = this.index++;
-        const duration$ = this.tryDurationSelector(value);
-        this.throttle(duration$, value, index);
-      } catch (error) {
-        this.destination.error(error);
-      }
+    this._hasValue = true;
+    this._sendValue = value;
+
+    if (!this._coalesced) {
+      this.send();
     }
   }
 
   protected _complete(): void {
-    const {_throttled} = this;
-    if (!_throttled || _throttled.closed) {
-      this.sendNextValue();
-      super._complete();
-    }
-    this.unsubscribe();
+    this.coalescingDone();
+    super._complete();
   }
 
-  notifyNext(outerValue: T, innerValue: T,
-             outerIndex: number, innerIndex: number,
-             innerSub: InnerSubscriber<T, T>): void {
-    if (this._trailing) {
-      this.sendNextValue();
-    }
-  }
-
-  notifyComplete(innerSub: Subscription): void {
-    const destination = this.destination as Subscription;
-    destination.remove(innerSub);
-    this._throttled = null;
-    if (this.isStopped) {
-      super._complete();
+  private send() {
+    const { _hasValue, _sendValue, _leading} = this;
+    if (_hasValue) {
+      if (_leading) {
+        this.destination.next(_sendValue!);
+        this._hasValue = false;
+        this._sendValue = null;
+      }
+      this.startCoalesceDuration(_sendValue!);
     }
   }
 
-  private sendNextValue(): void {
-    if (this._lastSentValue !== this._nextValue) {
-      this.destination.next(this._lastSentValue = this._nextValue);
+  private exhaustLastValue() {
+    const {_hasValue, _sendValue} = this;
+    if (_hasValue && _sendValue) {
+      this.destination.next(_sendValue!);
+      this._hasValue = false;
+      this._sendValue = null;
     }
   }
 
-  private throttle(duration$: SubscribableOrPromise<any>, value: T, index: number): void {
-    const innerSubscription = this._throttled;
-    if (innerSubscription) {
-      innerSubscription.unsubscribe();
-    }
-    const innerSubscriber = new InnerSubscriber(this, value, index);
-    const destination = this.destination as Subscription;
-    destination.add(innerSubscriber);
-    this._throttled = subscribeToResult(this, (duration$ as Observable<any>).pipe(first()), undefined, undefined, innerSubscriber);
-    // The returned subscription will usually be the subscriber that was
-    // passed. However, interop subscribers will be wrapped and for
-    // unsubscriptions to chain correctly, the wrapper needs to be added, too.
-    if (this._throttled !== innerSubscriber) {
-      destination.add(this._throttled);
+  private startCoalesceDuration(value: T): void {
+    const duration = this.tryDurationSelector(value);
+    if (!!duration) {
+      this.add(this._coalesced = subscribeToResult(this, duration));
     }
   }
 
@@ -167,5 +141,27 @@ class CoalesceSubscriber<T> extends OuterSubscriber<T, T> {
       this.destination.error(err);
       return null;
     }
+  }
+
+  private coalescingDone() {
+    const { _coalesced, _trailing } = this;
+    if (_coalesced) {
+      _coalesced.unsubscribe();
+    }
+    this._coalesced = null;
+
+    if (_trailing) {
+      this.exhaustLastValue();
+    }
+  }
+
+  notifyNext(outerValue: T, innerValue: R,
+             outerIndex: number, innerIndex: number,
+             innerSub: InnerSubscriber<T, R>): void {
+    this.coalescingDone();
+  }
+
+  notifyComplete(): void {
+    this.coalescingDone();
   }
 }

@@ -1,7 +1,7 @@
 export {
+  animationFrames,
   select,
   stateful,
-  animationFrames,
   coalesce,
   CoalesceConfig,
   createAccumulationObservable,

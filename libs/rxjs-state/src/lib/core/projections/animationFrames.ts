@@ -1,6 +1,6 @@
 import {Observable} from 'rxjs';
 
-/* THIS FILE IS A COPY OF RXJS AND GETS REMOVED AFTER TESTS */
+/* !!! THIS FILE IS A COPY OF RXJS AND GETS REMOVED AFTER TESTS !!! */
 
 
 export function animationFrames(timestampProvider: TimestampProvider = Date) {
@@ -22,7 +22,9 @@ function animationFramesFactory(timestampProvider: TimestampProvider) {
       }
     };
     id = requestAnimationFrame(run);
-    return () => cancelAnimationFrame(id);
+    return () => {
+      cancelAnimationFrame(id);
+    }
   });
 }
 

@@ -1,52 +1,32 @@
-import { Component } from '@angular/core';
-import {coalesce, CoalesceConfig, defaultCoalesceDurationSelector} from '@rx-state/rxjs-state';
-import { range, of, interval } from 'rxjs';
-import { animationFrame } from 'rxjs/internal/scheduler/animationFrame';
-import { scan, tap, throttle } from 'rxjs/operators';
+import {Component} from '@angular/core';
+import {coalesce, CoalesceConfig, animationFrames} from '@rx-state/rxjs-state';
+import {concat, range, timer} from 'rxjs';
+import {filter, tap} from 'rxjs/operators';
+import {time} from '../../../../libs/rxjs-state/spec/marble-helpers';
 
 @Component({
   selector: 'rx-state-root',
   template: `
     <h1>App</h1>
+    <!-- animationFrames: {{animationFrames$ | async}}<br>-->
+    stateChanges$: {{stateChanges$ | async}}<br>
+    o1$: {{o1$ | async}}<br>
   `
 })
 export class AppComponent {
+  animationFrames$ = animationFrames();
   cfg1: CoalesceConfig = {
     leading: true,
     trailing: true
   };
 
-  durationSelector$ = of(1, 2, 3, 4);
-
-  stateChanges$ = range(1, 25)
+  stateChanges$ = concat(range(1, 10),
+  //  timer(1000).pipe(filter(v => false))
+  );
   // 1, 10
-  c = this.stateChanges$
+  o1$ = this.stateChanges$
     .pipe(
-      scan((acc, curr) => acc + curr, 0),
-      // tap(console.log),
-      coalesce(defaultCoalesceDurationSelector, this.cfg1),
-      // throttle(value => interval(10), this.cfg1)
-      )
-    .subscribe(console.log);
-  /*d = of(3333333, 2, 3, 4)
-    .pipe(coalesce())
-    .subscribe(console.log);*/
-  /*r = of(3333333, 2, 3, 4)
-    .pipe(coalesce())
-    .subscribe(console.log);
-  s = of(3333333, 2, 3, 4)
-    .pipe(coalesce())
-    .subscribe(console.log);
-    */
+      coalesce(() => animationFrames(), this.cfg1),
+      tap(console.log)
+    )
 }
-
-
-
-// source: --abcde--------
-// start:  --^------------
-// first:  --a------------
-
-// source: --abcde--------
-// end:    -------^-------
-// lase:   ------e--------
-// both:   --a---e--------
