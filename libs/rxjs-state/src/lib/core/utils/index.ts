@@ -2,11 +2,6 @@ export { ArgumentNotObservableError } from './argument-not-observable-error';
 export { WrongSelectParamsError } from './wrong-select-params-error';
 export { pipeFromArray } from './pipe-from-array';
 export {
-  CoalesceConfig,
-  CoalescingContext,
-  getCoalesceWorkConfig,
-} from './coalesce-work';
-export {
   potentialObservableValue,
   remainHigherOrder,
   isUndefinedOrNullGuard,
