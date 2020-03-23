@@ -41,7 +41,7 @@ describe('stateful', () => {
   it('should pass only values other than undefined', marbles(m => {
       const values = {u: undefined, a: null, b: '', c: [], d: {}};
       const source = m.hot('u-a-b-c-d|', values);
-      m.expect(source.pipe(stateful())).toBeObservable('u-a-b-c-d|', values);
+      m.expect(source.pipe(stateful())).toBeObservable('--a-b-c-d|', values);
     })
   );
 

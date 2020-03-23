@@ -20,7 +20,7 @@ export class State<T> implements Subscribable<any> {
     private accumulationObservable = createAccumulationObservable<T>();
     private effectObservable = createSideEffectObservable();
 
-    $ = this.accumulationObservable.state$;
+    readonly $ = this.accumulationObservable.state$;
 
     constructor() {
 
