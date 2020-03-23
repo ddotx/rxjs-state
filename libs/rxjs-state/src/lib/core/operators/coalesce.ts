@@ -7,14 +7,33 @@ import {
   Subscription,
   TeardownLogic
 } from 'rxjs';
-import {CoalesceConfig} from '../utils';
-import {OuterSubscriber, subscribeToResult, InnerSubscriber} from 'rxjs/internal-compatibility';
+import {InnerSubscriber, OuterSubscriber, subscribeToResult} from 'rxjs/internal-compatibility';
 import {generateFrames} from '../projections';
 
+
+export interface CoalescingContext {
+  isCoalescing: any | undefined;
+}
+
+export interface CoalesceConfig {
+  context?: CoalescingContext;
+  leading?: boolean;
+  trailing?: boolean;
+}
+
 export const defaultCoalesceConfig: CoalesceConfig = {
+  // @TODO consiger getGlobalThis aas default
+  context: {isCoalescing: false},
   leading: false,
   trailing: true
 };
+
+export function getCoalesceConfig(config: CoalesceConfig = defaultCoalesceConfig): CoalesceConfig {
+  return {
+    ...defaultCoalesceConfig,
+    ...config,
+  };
+}
 
 export const defaultCoalesceDurationSelector = <T>(value: T) => generateFrames();
 
@@ -64,35 +83,40 @@ export const defaultCoalesceDurationSelector = <T>(value: T) => generateFrames()
  * @name coalesce
  */
 export function coalesce<T>(durationSelector: (value: T) => SubscribableOrPromise<any> = defaultCoalesceDurationSelector,
-                            config: CoalesceConfig = defaultCoalesceConfig): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>) => source.lift(new CoalesceOperator(durationSelector, !!config.leading, !!config.trailing));
+                            config?: CoalesceConfig): MonoTypeOperatorFunction<T> {
+  return (source: Observable<T>) => source.lift(new CoalesceOperator(durationSelector, getCoalesceConfig(config)));
 }
 
 class CoalesceOperator<T> implements Operator<T, T> {
   constructor(private durationSelector: (value: T) => SubscribableOrPromise<any>,
-              private leading: boolean,
-              private trailing: boolean) {
+              private config: CoalesceConfig) {
   }
 
   call(subscriber: Subscriber<T>, source: any): TeardownLogic {
     return source.subscribe(
-      new CoalesceSubscriber(subscriber, this.durationSelector, this.leading, this.trailing)
+      new CoalesceSubscriber(subscriber, this.durationSelector, this.config)
     );
   }
 }
-
-
 
 class CoalesceSubscriber<T, R> extends OuterSubscriber<T, R> {
   private _coalesced: Subscription | null | undefined;
   private _sendValue: T | null = null;
   private _hasValue = false;
+  private _leading: boolean;
+  private _trailing: boolean;
+  private _context: CoalescingContext;
 
   constructor(protected destination: Subscriber<T>,
               private durationSelector: (value: T) => SubscribableOrPromise<number>,
-              private _leading: boolean,
-              private _trailing: boolean) {
+              config: CoalesceConfig) {
     super(destination);
+    this._leading = config.leading;
+    this._trailing = config.trailing;
+    this._context = config.context;
+    if (!this._context) {
+      this._context = {} as any;
+    }
   }
 
   protected _next(value: T): void {
@@ -110,7 +134,7 @@ class CoalesceSubscriber<T, R> extends OuterSubscriber<T, R> {
   }
 
   private send() {
-    const { _hasValue, _sendValue, _leading} = this;
+    const {_hasValue, _sendValue, _leading} = this;
     if (_hasValue) {
       if (_leading) {
         this.destination.next(_sendValue!);
@@ -134,7 +158,25 @@ class CoalesceSubscriber<T, R> extends OuterSubscriber<T, R> {
     const duration = this.tryDurationSelector(value);
     if (!!duration) {
       this.add(this._coalesced = subscribeToResult(this, duration));
+      this._context.isCoalescing = true;
     }
+  }
+
+  private coalescingDone() {
+    const {_coalesced, _trailing, _context} = this;
+    if (_coalesced) {
+      _coalesced.unsubscribe();
+    }
+    this._coalesced = null;
+
+    if (_context.isCoalescing) {
+      if (_trailing) {
+        this.exhaustLastValue();
+      }
+      this._context.isCoalescing = false;
+    }
+    ;
+
   }
 
   private tryDurationSelector(value: T): SubscribableOrPromise<any> | null {
@@ -146,17 +188,6 @@ class CoalesceSubscriber<T, R> extends OuterSubscriber<T, R> {
     }
   }
 
-  private coalescingDone() {
-    const { _coalesced, _trailing } = this;
-    if (_coalesced) {
-      _coalesced.unsubscribe();
-    }
-    this._coalesced = null;
-
-    if (_trailing) {
-      this.exhaustLastValue();
-    }
-  }
 
   notifyNext(outerValue: T, innerValue: R,
              outerIndex: number, innerIndex: number,
