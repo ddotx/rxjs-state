@@ -8,13 +8,15 @@
  # Description
  Rendering, in most web applications, is by far the most performance crucial part.
  The _coalesce_ operator's general purpose is to buffer state changes together 
- to a single emission per `animationFrame` enabling the user to update render changes only once per `animationFrame`.
- By default changes will be emitted on the trailing end of an `animationFrame` 
- but this behavior is fully configurable by the `durationSelector` and the `config`
+ to a single emission per `animationFrame`, enabling the user to render changes only once per `animationFrame`.
+ By default, changes will be emitted on the trailing edge of an `animationFrame`.
+ This behavior is fully configurable by the `durationSelector`.
  
- Furthermore the _coalesce_ operator provides the option to define a custom scope. If provided, 
- changes will only be emitted once per scope. This helps especially in component based 
- architectures.
+ However, the _coalesce_ operator provides the option to define a custom coalescing scope via the `config`. If provided, 
+ the buffered changes of the source will only be emitted once per scope.
+ This is especially helpful in scenarios where you want to have only one emission across multiple subscribers.
+ 
+ You find a more in depth explanation in the [Usage](#scoping) section of this document.
  
  # API
  ## Signature
@@ -43,8 +45,8 @@
    Optional. Default is `defaultCoalesceConfig` ({ leading: false, trailing: true }` & scoping per Subscriber aka no scoping)
    By default the coalescing operator emits on the trailing end of the defined durationSelector and per Subscriber. The context can be any object.
 
- # Usage
- ## Basic usage
+ #Usage
+ ##Basic usage
  By default the coalesce operator helps you to throttle changes of incoming sources to the trailing edge of an animationFrame.
  This example demonstrates how the render method is only called once thus having four changes of the source stream.
 ```typescript
@@ -59,7 +61,7 @@ source$.pipe(
 });
 
   ```
- ## Scoping
+ ##Scoping
  If multiple coalesce operators are configured with the same scope object, only one change will be emitted to the first `Subscriber`.
  This simple example shows how it is possible to coalesce multiple subscribers to one shared scope object. This will result in 
  only one rendering call thus having multiple subscribers to the incoming stream.
