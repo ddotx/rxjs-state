@@ -20,16 +20,18 @@
   ```typescript
   coalesce<T>(durationSelector: (value: T) => SubscribableOrPromise<any> = defaultCoalesceDurationSelector, config?: CoalesceConfig = defaultCoalesceConfig):
         MonoTypeOperatorFunction<T>
-  
+```
+ ## Defaults
+```typescript
   defaultCoalesceDurationSelector = <T>(value: T) => generateFrames();
-  
+      
   defaultCoalesceConfig: CoalesceConfig = {
         context: {isCoalescing: false},
         leading: false,
         trailing: true
   };
 ```
- ## Parameters
+ ## Configuration
   **durationSelector:**
   
   Optional. Default is `defaultCoalesceDurationSelector` (coalescing by animationFrame)
