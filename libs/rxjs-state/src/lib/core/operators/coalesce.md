@@ -1,5 +1,7 @@
- Emits a value once per animationFrame, then ignores subsequent source 
- values for the duration of one animationFrame, then repeats this process. 
+ Emits a value from the source Observable on the trailing edge of an interval, then ignores subsequent
+ source values for a duration determined by another Observable (`durationSelector`), then repeats this process.
+
+ The coalesce operator is based on the [throttle](https://rxjs-dev.firebaseapp.com/api/operators/throttle) operator.
 
  ![](coalesce.png)
 
