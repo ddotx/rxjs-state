@@ -7,9 +7,10 @@
 
  # Description
  Rendering, in most web applications, is by far the most performance crucial part.
- The _coalesce_ operator's general purpose is to buffer render relevant state changes together 
- to a single emission. By default changes will be emitted on the trailing end of an animationFrame 
- but this behavior is fully configurable.
+ The _coalesce_ operator's general purpose is to buffer state changes together 
+ to a single emission per `animationFrame` enabling the user to update render changes only once per `animationFrame`.
+ By default changes will be emitted on the trailing end of an `animationFrame` 
+ but this behavior is fully configurable by the `durationSelector` and the `config`
  
  Furthermore the _coalesce_ operator provides the option to define a custom scope. If provided, 
  changes will only be emitted once per scope. This helps especially in component based 
@@ -59,8 +60,8 @@ source$.pipe(
 
   ```
  ## Scoping
- If two subscriber share the same scope object, changes will only be emitted to one of the subscriber. This simple 
- example shows how it is possible to coalesce multiple subscribers to one shared scope object. This will result in 
+ If multiple coalesce operators are configured with the same scope object, only one change will be emitted to the first `Subscriber`.
+ This simple example shows how it is possible to coalesce multiple subscribers to one shared scope object. This will result in 
  only one rendering call thus having multiple subscribers to the incoming stream.
  
  ```typescript
