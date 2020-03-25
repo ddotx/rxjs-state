@@ -44,20 +44,24 @@
 
  # Usage
  ## Basic usage
-   ```typescript
- import { coalesce } from 'rxjs-state';
+ By default the coalesce operator helps you to throttle changes of incoming sources to the trailing edge of an animationFrame.
+ This example demonstrates how the render method is only called once thus having four changes of the source stream.
+```typescript
+import { coalesce } from 'rxjs-state';
 import { range } from '@rxjs';
  
 const source$ = range(1, 4); // stream of data
 source$.pipe(
     coalesce()
-).subscribe(coalescedVal => {
-    console.log(coalescedVal);
+).subscribe(stateChanges => {
+    render(); // render method will be called once for the value 4 of the stream
 });
 
-// output: 4
   ```
  ## Scoping
+ If two subscriber share the same scope object, changes will only be emitted to one of the subscriber. This simple 
+ example shows how it is possible to coalesce multiple subscribers to one shared scope object. This will result in 
+ only one rendering call thus having multiple subscribers to the incoming stream.
  
  ```typescript
  import { coalesce, generateFrames } from 'rxjs-state';
@@ -70,15 +74,15 @@ source$.pipe(
 
  source$.pipe(
      coalesce(() => generateFrames(), coalesceConfig)
- ).subscribe(coalescedVal => {
-     console.log(coalescedVal);
+ ).subscribe(stateChanges => {
+     render(); // render method will be called once for the value 4 of the stream
  });
- // output: 4
+
  source$.pipe(
      coalesce(() => generateFrames(), coalesceConfig)
- ).subscribe(coalescedVal => {
-     console.log(coalescedVal);
- });
-// no output, since the value will be emitted only once per scope
+ ).subscribe(stateChanges => {
+    render();
+});
+// view doesn't get rendered, since the value will be emitted only once per scope
    ```
  
