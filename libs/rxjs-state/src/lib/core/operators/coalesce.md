@@ -7,7 +7,7 @@
 
  # Description
  Rendering, in most web applications, is by far the most performance crucial part.
- The _coalesce_ operator's general purpose is to buffer render critical state changes together 
+ The _coalesce_ operator's general purpose is to buffer render relevant state changes together 
  to a single emission. By default changes will be emitted on the trailing end of an animationFrame 
  but this behavior is fully configurable.
  
@@ -15,30 +15,32 @@
  changes will only be emitted once per scope. This helps especially in component based 
  architectures.
  
- # Usage
-   ```typescript
-coalesce<T>(durationSelector: (value: T) => SubscribableOrPromise<any> = defaultCoalesceDurationSelector, config?: CoalesceConfig = defaultCoalesceConfig):
-      MonoTypeOperatorFunction<T>
-
-defaultCoalesceDurationSelector = <T>(value: T) => generateFrames();
-
-defaultCoalesceConfig: CoalesceConfig = {
-      context: {isCoalescing: false},
-      leading: false,
-      trailing: true
-};
-  ```
- ## Parameters
- **durationSelector:**
- 
- Optional. Default is `defaultCoalesceDurationSelector` (coalescing by animationFrame)
- A function that receives a value from the source Observable, for computing the silencing duration for each source value, returned as an Observable or a Promise.
- 
-  **config:**
+ # API
+ ## Signature
+  ```typescript
+  coalesce<T>(durationSelector: (value: T) => SubscribableOrPromise<any> = defaultCoalesceDurationSelector, config?: CoalesceConfig = defaultCoalesceConfig):
+        MonoTypeOperatorFunction<T>
   
-  Optional. Default is `defaultCoalesceConfig` ({ leading: false, trailing: true }` & scoping per Subscriber aka no scoping)
-  By default the coalescing operator emits on the trailing end of the defined durationSelector and per Subscriber. The context can be any object.
- 
+  defaultCoalesceDurationSelector = <T>(value: T) => generateFrames();
+  
+  defaultCoalesceConfig: CoalesceConfig = {
+        context: {isCoalescing: false},
+        leading: false,
+        trailing: true
+  };
+```
+ ## Parameters
+  **durationSelector:**
+  
+  Optional. Default is `defaultCoalesceDurationSelector` (coalescing by animationFrame)
+  A function that receives a value from the source Observable, for computing the silencing duration for each source value, returned as an Observable or a Promise.
+  
+   **config:**
+   
+   Optional. Default is `defaultCoalesceConfig` ({ leading: false, trailing: true }` & scoping per Subscriber aka no scoping)
+   By default the coalescing operator emits on the trailing end of the defined durationSelector and per Subscriber. The context can be any object.
+
+ # Usage
  ## Basic usage
    ```typescript
  import { coalesce } from 'rxjs-state';
