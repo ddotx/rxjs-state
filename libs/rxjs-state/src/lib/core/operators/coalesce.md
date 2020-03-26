@@ -45,8 +45,8 @@
    Optional. Default is `defaultCoalesceConfig` ({ leading: false, trailing: true }` & scoping per Subscriber aka no scoping)
    By default the coalescing operator emits on the trailing end of the defined durationSelector and per Subscriber. The context can be any object.
 
- #Usage
- ##Basic usage
+ # Usage
+ ## Basic usage
  By default the coalesce operator helps you to throttle changes of incoming sources to the trailing edge of an animationFrame.
  This example demonstrates how the render method is only called once thus having four changes of the source stream.
 ```typescript
@@ -61,7 +61,7 @@ source$.pipe(
 });
 
   ```
- ##Scoping
+ ## Scoping
  If multiple coalesce operators are configured with the same scope object, only one change will be emitted to the first `Subscriber`.
  This simple example shows how it is possible to coalesce multiple subscribers to one shared scope object. This will result in 
  only one rendering call thus having multiple subscribers to the incoming stream.
@@ -84,8 +84,7 @@ source$.pipe(
  source$.pipe(
      coalesce(() => generateFrames(), coalesceConfig)
  ).subscribe(stateChanges => {
-    render();
+    render(); // view doesn't get rendered, since the value will be emitted only once per scope
 });
-// view doesn't get rendered, since the value will be emitted only once per scope
    ```
  
